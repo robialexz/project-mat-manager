@@ -1,5 +1,5 @@
-
-import { Material, MaterialHistory } from "@/types";
+import { Material, Project, ProjectSummary } from '@/types';
+import { v4 as uuidv4 } from 'uuid';
 
 // Create a new material
 export const createMaterial = (material: Omit<Material, 'id' | 'createdAt' | 'updatedAt' | 'history'>, userId: string): Material => {

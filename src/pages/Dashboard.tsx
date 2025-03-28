@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Plus, FileSpreadsheet, Package, TruckIcon, CheckCircle, AlertCircle } from 'lucide-react';
+import { Plus, FileSpreadsheet, Package, TruckIcon, CheckCircle, AlertCircle, Users } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import ProjectCard from '@/components/ProjectCard';
 import { generateMockProjects } from '@/utils/materialUtils';
