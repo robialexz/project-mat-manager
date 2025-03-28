@@ -7,6 +7,33 @@ export interface User {
   avatar?: string;
 }
 
+export interface Team {
+  id: string;
+  name: string;
+  description: string;
+  createdAt: Date;
+  createdBy: string;
+}
+
+export interface TeamMember {
+  id: string;
+  userId: string;
+  teamId: string;
+  role: 'admin' | 'manager' | 'member';
+  joinedAt: Date;
+}
+
+export interface Invitation {
+  id: string;
+  email: string;
+  teamId: string;
+  role: 'admin' | 'manager' | 'member';
+  invitedBy: string;
+  invitedAt: Date;
+  status: 'pending' | 'accepted' | 'expired';
+  code: string;
+}
+
 export interface Project {
   id: string;
   name: string;
