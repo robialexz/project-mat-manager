@@ -11,6 +11,16 @@ import { parseExcelData } from '@/utils/materialUtils';
 import { getUserProjectsMock as getUserProjects } from '@/utils/userUtils'; 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'; 
 import { Label } from '@/components/ui/label'; 
+// Import shadcn Table components
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const ImportMaterialsPage = () => {
   const { userId } = useAuth(); // Get mock userId
@@ -152,32 +162,40 @@ const ImportMaterialsPage = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {/* Preview Table */}
-            <div className="overflow-x-auto rounded-md border max-h-96 mb-6">
-              <table className="min-w-full divide-y divide-muted">
-                <thead className="bg-muted/50">
-                  <tr>
-                    <th scope="col" className="px-4 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Name</th>
-                    <th scope="col" className="px-4 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Category</th>
-                    <th scope="col" className="px-4 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Quantity</th>
-                    <th scope="col" className="px-4 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Unit</th>
-                    <th scope="col" className="px-4 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Price</th>
-                    <th scope="col" className="px-4 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Supplier</th>
-                  </tr>
-                </thead>
-                <tbody className="bg-background divide-y divide-muted">
-                  {importedMaterials.map((material, index) => (
-                    <tr key={index}>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-foreground">{material.name || '-'}</td>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm text-muted-foreground">{material.category || '-'}</td>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm text-muted-foreground">{material.quantity || '-'}</td>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm text-muted-foreground">{material.unit || '-'}</td>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm text-muted-foreground">{material.price ? `$${material.price.toFixed(2)}` : '-'}</td>
-                       <td className="px-4 py-2 whitespace-nowrap text-sm text-muted-foreground">{material.supplier || '-'}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            {/* Use shadcn Table for preview */}
+            <div className="rounded-md border max-h-[50vh] overflow-auto mb-6"> 
+              <Table>
+                <TableHeader className="sticky top-0 bg-muted/50"> 
+                  <TableRow>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Category</TableHead>
+                    <TableHead>Quantity</TableHead>
+                    <TableHead>Unit</TableHead>
+                    <TableHead>Price</TableHead>
+                    <TableHead>Supplier</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {importedMaterials.length === 0 ? (
+                     <TableRow>
+                       <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
+                         No materials to preview. Upload a file first.
+                       </TableCell>
+                     </TableRow>
+                  ) : (
+                    importedMaterials.map((material, index) => (
+                      <TableRow key={index}>
+                        <TableCell className="font-medium">{material.name || <span className="text-destructive">Missing</span>}</TableCell>
+                        <TableCell>{material.category || '-'}</TableCell>
+                        <TableCell>{material.quantity ?? <span className="text-destructive">Missing</span>}</TableCell>
+                        <TableCell>{material.unit || <span className="text-destructive">Missing</span>}</TableCell>
+                        <TableCell>{material.price ? `$${material.price.toFixed(2)}` : '-'}</TableCell>
+                        <TableCell>{material.supplier || '-'}</TableCell>
+                      </TableRow>
+                    ))
+                  )}
+                </TableBody>
+              </Table>
             </div>
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row justify-end items-center space-y-3 sm:space-y-0 sm:space-x-3">
