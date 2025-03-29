@@ -10,7 +10,10 @@
         "language": "Language",
         "settings": "Settings",
         "import": "Import",
-        "history": "History"
+        "history": "History",
+        "resources": "Resources",
+        "aboutUs": "About Us",
+        "register": "Register" 
       },
       "homepage": {
         "welcomeTitle": "Welcome to the Material Manager",

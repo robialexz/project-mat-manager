@@ -10,7 +10,10 @@
         "language": "Idioma",
         "settings": "Configuración",
         "import": "Importar",
-        "history": "Historial"
+        "history": "Historial",
+        "resources": "Recursos",
+        "aboutUs": "Sobre Nosotros",
+        "register": "Registrarse"
       },
       "homepage": {
         "welcomeTitle": "Bienvenido al Gestor de Materiales",

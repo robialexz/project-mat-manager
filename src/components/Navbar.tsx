@@ -1,8 +1,9 @@
 import { Link, NavLink } from 'react-router-dom';
-import { Boxes, LayoutDashboard, Building, Users, LogIn, LogOut, Languages, Upload, History, Settings } from 'lucide-react'; // Added missing icons
+// Added BookOpen, Info, UserPlus icons
+import { Boxes, LayoutDashboard, Building, Users, LogIn, LogOut, Languages, Upload, History, Settings, BookOpen, Info, UserPlus } from 'lucide-react'; 
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/App';
-import { useTranslation } from 'react-i18next'; // Import useTranslation
+import { useTranslation } from 'react-i18next'; 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"; 
 import {
   DropdownMenu,
@@ -14,8 +15,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
-  const { isAuthenticated, userEmail, logout } = useAuth(); // Use mock auth
-  const { t, i18n } = useTranslation(); // Initialize translation
+  const { isAuthenticated, userEmail, logout } = useAuth(); 
+  const { t, i18n } = useTranslation(); 
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
@@ -35,18 +36,19 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-card border-b shadow-sm sticky top-0 z-50"> {/* Added sticky and z-index */}
+    <nav className="bg-card border-b shadow-sm sticky top-0 z-50"> 
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo and Title */}
           <Link to="/" className="flex items-center space-x-2 text-lg font-semibold">
             <Boxes className="h-6 w-6 text-primary" />
-            <span>{t('navbar.title')}</span> {/* Use translation */}
+            <span>{t('navbar.title')}</span> 
           </Link>
 
           {/* Navigation Links (Desktop) */}
           <div className="hidden md:flex items-center space-x-4">
-            {isAuthenticated && (
+            {isAuthenticated ? (
+              // Authenticated Links
               <>
                 <NavLink 
                   to="/dashboard" 
@@ -92,7 +94,6 @@ const Navbar = () => {
                   <Users className="mr-2 h-4 w-4" />
                   {t('navbar.users')}
                 </NavLink>
-                {/* Add Import and History links back */}
                 <NavLink 
                   to="/import-materials" 
                   className={({ isActive }) => 
@@ -114,6 +115,32 @@ const Navbar = () => {
                 >
                   <History className="mr-2 h-4 w-4" />
                   {t('navbar.history')}
+                </NavLink>
+              </>
+            ) : (
+              // Unauthenticated Links
+              <>
+                 <NavLink 
+                  to="/resources" // Placeholder path
+                  className={({ isActive }) => 
+                    `flex items-center px-3 py-2 rounded-md text-sm font-medium ${
+                      isActive ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
+                    }`
+                  }
+                >
+                  <BookOpen className="mr-2 h-4 w-4" /> 
+                  {t('navbar.resources')}
+                </NavLink>
+                 <NavLink 
+                  to="/about-us" // Placeholder path
+                  className={({ isActive }) => 
+                    `flex items-center px-3 py-2 rounded-md text-sm font-medium ${
+                      isActive ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
+                    }`
+                  }
+                >
+                   <Info className="mr-2 h-4 w-4" /> 
+                  {t('navbar.aboutUs')}
                 </NavLink>
               </>
             )}
@@ -144,11 +171,10 @@ const Navbar = () => {
             {/* User Menu / Auth Button */}
             {isAuthenticated ? (
               <DropdownMenu>
-                 {/* Use asChild and ensure Button is the single direct child */}
-                <DropdownMenuTrigger asChild>
+                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                     <Avatar className="h-8 w-8">
-                      <AvatarImage src="" alt={userEmail || 'User'} /> {/* Placeholder */}
+                      <AvatarImage src="" alt={userEmail || 'User'} /> 
                       <AvatarFallback>{getInitials()}</AvatarFallback>
                     </Avatar>
                   </Button> 
@@ -156,16 +182,11 @@ const Navbar = () => {
                 <DropdownMenuContent className="w-56" align="end" forceMount>
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">
-                        {userEmail} 
-                      </p>
-                      <p className="text-xs leading-none text-muted-foreground">
-                        {userEmail}
-                      </p>
+                      <p className="text-sm font-medium leading-none">{userEmail}</p>
+                      <p className="text-xs leading-none text-muted-foreground">{userEmail}</p>
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  {/* Ensure Settings link is present */}
                   <DropdownMenuItem asChild>
                      <Link to="/settings">
                        <Settings className="mr-2 h-4 w-4" />
@@ -180,12 +201,21 @@ const Navbar = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Button asChild>
-                <Link to="/login">
-                  <LogIn className="mr-2 h-4 w-4" />
-                  {t('navbar.login')} 
-                </Link>
-              </Button>
+              // Login and Register Buttons for Unauthenticated Users
+              <div className="flex items-center space-x-2">
+                 <Button variant="ghost" asChild>
+                   <Link to="/login">
+                     <LogIn className="mr-2 h-4 w-4" />
+                     {t('navbar.login')} 
+                   </Link>
+                 </Button>
+                 <Button asChild>
+                   <Link to="/login"> {/* Point Register to Login for now */}
+                     <UserPlus className="mr-2 h-4 w-4" /> 
+                     {t('navbar.register')} 
+                   </Link>
+                 </Button>
+              </div>
             )}
           </div>
         </div>

@@ -10,7 +10,10 @@
         "language": "Limbă",
         "settings": "Setări",
         "import": "Import",
-        "history": "Istoric"
+        "history": "Istoric",
+        "resources": "Resurse",
+        "aboutUs": "Despre Noi",
+        "register": "Înregistrare"
       },
       "homepage": {
         "welcomeTitle": "Bun venit la Managerul de Materiale",
