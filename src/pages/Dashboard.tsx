@@ -2,7 +2,8 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/App';
 import { useNavigate } from 'react-router-dom';
-import { getUserProjects } from '@/utils/userUtils';
+// Use mock function names
+import { getUserProjectsMock as getUserProjects } from '@/utils/userUtils'; 
 import { Project, TeamMember } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -34,7 +35,8 @@ import {
   Hammer
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { getAllSuppliers, getOrderStatuses } from '@/utils/supplierUtils';
+// Use mock function names
+import { getAllSuppliersMock as getAllSuppliers, getOrderStatuses } from '@/utils/supplierUtils'; 
 import { Supplier, OrderStatus } from '@/types/supplier';
 
 // Custom types for dashboard
@@ -71,22 +73,26 @@ export default function Dashboard() {
     const loadData = async () => {
       try {
         setIsLoading(true);
-        if (!userId) return;
+        if (!userId) {
+           console.warn("Dashboard: User ID not found, skipping data load.");
+           setIsLoading(false);
+           return;
+        };
         
-        // Load user's projects
-        const userProjects = getUserProjects(userId);
+        // Load user's projects (mock)
+        const userProjects = getUserProjects(userId); 
         setProjects(userProjects);
         
-        // Load active projects
+        // Load active projects (mock)
         const active = userProjects.filter(p => p.status === 'active');
-        setActiveProjects(active.slice(0, 3)); // Show only top 3
+        setActiveProjects(active.slice(0, 3)); 
         
-        // Load suppliers
-        const allSuppliers = getAllSuppliers();
+        // Load suppliers (mock)
+        const allSuppliers = getAllSuppliers(); 
         setSuppliers(allSuppliers);
         
-        // Load orders
-        const allOrders = getOrderStatuses();
+        // Load orders (mock)
+        const allOrders = getOrderStatuses(); 
         setOrders(allOrders);
         
         // Calculate project status counts
