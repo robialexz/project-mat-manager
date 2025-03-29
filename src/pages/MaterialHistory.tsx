@@ -8,70 +8,10 @@ import { Button } from '@/components/ui/button';
 import { Search, Filter, ArrowUpDown } from 'lucide-react';
 import { MaterialHistory, Project, Material } from '@/types'; // Added Material import
 import { generateMockProjects } from '@/utils/userUtils'; 
+// Import the history generator from materialUtils
+import { generateMockMaterialHistory } from '@/utils/materialUtils'; 
 
-// Mock data generation for MaterialHistory
-const generateMockMaterialHistory = (projects: Project[]): MaterialHistory[] => {
-  const history: MaterialHistory[] = [];
-  const fields = ['quantity', 'price', 'status', 'supplier'];
-  const users = ['user_1', 'user_2', 'user_3']; // Mock user IDs
-
-  projects.forEach(project => {
-    project.materials.forEach(material => {
-      const changeCount = Math.floor(Math.random() * 3); // 0-2 changes per material
-      let currentQty = material.quantity;
-      let currentPrice = material.price;
-      let currentStatus = material.status;
-
-      for (let i = 0; i < changeCount; i++) {
-        const field = fields[Math.floor(Math.random() * fields.length)];
-        const changedAt = new Date(Date.parse(material.createdAt) + Math.random() * (Date.now() - Date.parse(material.createdAt))).toISOString();
-        const changedBy = users[Math.floor(Math.random() * users.length)];
-        let oldValue: any = null;
-        let newValue: any = null;
-
-        switch (field) {
-          case 'quantity':
-            oldValue = currentQty;
-            newValue = Math.max(0, currentQty + Math.floor(Math.random() * 21) - 10); // Change by -10 to +10
-            currentQty = newValue;
-            break;
-          case 'price':
-            oldValue = currentPrice;
-            newValue = Math.max(0, currentPrice + (Math.random() * 20 - 10)); // Change price by +/- 10
-            currentPrice = newValue;
-            break;
-          case 'status':
-            oldValue = currentStatus;
-            const statuses: Material['status'][] = ['pending', 'ordered', 'delivered', 'cancelled'];
-            newValue = statuses[Math.floor(Math.random() * statuses.length)];
-            currentStatus = newValue;
-            break;
-           case 'supplier':
-             oldValue = material.supplier; // Keep original for simplicity
-             newValue = `Supplier ${Math.floor(Math.random() * 5) + 1}`;
-             break;
-        }
-
-        if (oldValue !== newValue) {
-          history.push({
-            id: `hist_${material.id}_${i}`,
-            materialId: material.id,
-            field: field,
-            oldValue: oldValue,
-            newValue: newValue,
-            changedAt: changedAt,
-            changedBy: changedBy,
-            confirmed: Math.random() > 0.3, // Randomly confirmed
-            // Add projectId for easier filtering if needed in type
-            // projectId: project.id 
-          });
-        }
-      }
-    });
-  });
-  return history.sort((a, b) => new Date(b.changedAt).getTime() - new Date(a.changedAt).getTime());
-};
-
+// Mock data generation function is now in materialUtils.ts
 
 const MaterialHistoryPage = () => {
   const [history, setHistory] = useState<MaterialHistory[]>([]);
@@ -85,7 +25,8 @@ const MaterialHistoryPage = () => {
     // Load mock data
     const mockProjects = generateMockProjects(5); // Generate some projects
     setProjects(mockProjects);
-    const mockHistory = generateMockMaterialHistory(mockProjects);
+    // Use the imported generator function
+    const mockHistory = generateMockMaterialHistory(mockProjects); 
     setHistory(mockHistory);
     setFilteredHistory(mockHistory);
     setIsLoading(false);
@@ -103,15 +44,15 @@ const MaterialHistoryPage = () => {
          String(item.newValue).toLowerCase().includes(lowerSearchTerm) ||
          item.materialId.toLowerCase().includes(lowerSearchTerm) || // Search by material ID
          item.changedBy.toLowerCase().includes(lowerSearchTerm) // Search by user ID
-         // Add search by material name (requires joining/lookup)
+         // TODO: Add search by material name (requires joining/lookup)
       );
     }
     
     if (projectFilter !== 'all') {
-       // This requires projectId to be part of MaterialHistory type or a lookup
-       // For mock data, we'll filter based on the generated data structure if possible
-       // Assuming generateMockMaterialHistory adds projectId
-       result = result.filter(item => (item as any).projectId === projectFilter); 
+       // TODO: This requires projectId to be part of MaterialHistory type or a lookup
+       // For mock data, filtering by project ID is not directly possible with current structure
+       // result = result.filter(item => (item as any).projectId === projectFilter); 
+       console.warn("Filtering history by project ID is not implemented in mock data.")
     }
     
     setFilteredHistory(result);

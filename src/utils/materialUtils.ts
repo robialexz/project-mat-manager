@@ -138,4 +138,65 @@ export const getProjectSummary = (project: Project): ProjectSummary => {
 };
 
 // NOTE: generateMockProjects was moved to userUtils.ts and should be imported from there if needed.
-// If generateMockProjects is still needed here, it should be copied back from the restored userUtils.ts
+
+// Mock data generation for MaterialHistory (Moved from MaterialHistory.tsx)
+export const generateMockMaterialHistory = (projects: Project[]): MaterialHistory[] => {
+  const history: MaterialHistory[] = [];
+  const fields = ['quantity', 'price', 'status', 'supplier'];
+  const users = ['user_1', 'user_2', 'user_3']; // Mock user IDs
+
+  projects.forEach(project => {
+    (project.materials || []).forEach(material => { // Add null check for materials
+      const changeCount = Math.floor(Math.random() * 3); 
+      let currentQty = material.quantity;
+      let currentPrice = material.price;
+      let currentStatus = material.status;
+
+      for (let i = 0; i < changeCount; i++) {
+        const field = fields[Math.floor(Math.random() * fields.length)];
+        const changedAt = new Date(Date.parse(material.createdAt) + Math.random() * (Date.now() - Date.parse(material.createdAt))).toISOString();
+        const changedBy = users[Math.floor(Math.random() * users.length)];
+        let oldValue: any = null;
+        let newValue: any = null;
+
+        switch (field) {
+          case 'quantity':
+            oldValue = currentQty;
+            newValue = Math.max(0, currentQty + Math.floor(Math.random() * 21) - 10); 
+            currentQty = newValue;
+            break;
+          case 'price':
+            oldValue = currentPrice;
+            newValue = Math.max(0, currentPrice + (Math.random() * 20 - 10)); 
+            currentPrice = newValue;
+            break;
+          case 'status':
+            oldValue = currentStatus;
+            const statuses: Material['status'][] = ['pending', 'ordered', 'delivered', 'cancelled'];
+            newValue = statuses[Math.floor(Math.random() * statuses.length)];
+            currentStatus = newValue;
+            break;
+           case 'supplier':
+             oldValue = material.supplier; 
+             newValue = `Supplier ${Math.floor(Math.random() * 5) + 1}`;
+             break;
+        }
+
+        if (oldValue !== newValue) {
+          history.push({
+            id: `hist_${material.id}_${i}`,
+            materialId: material.id,
+            field: field,
+            oldValue: oldValue,
+            newValue: newValue,
+            changedAt: changedAt,
+            changedBy: changedBy,
+            confirmed: Math.random() > 0.3, 
+            // projectId: project.id // Add projectId if needed
+          });
+        }
+      }
+    });
+  });
+  return history.sort((a, b) => new Date(b.changedAt).getTime() - new Date(a.changedAt).getTime());
+};
