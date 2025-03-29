@@ -22,14 +22,32 @@ const SettingsPage = () => {
     return name.substring(0, 2).toUpperCase();
   };
 
+  // Mock profile update handler
   const handleProfileUpdate = (e: React.FormEvent) => {
     e.preventDefault();
-    toast.info("Profile update functionality is not yet implemented.");
-    // In a real app with Supabase:
-    // Call an updateProfile function (e.g., from userUtils)
-    // await updateProfile(userId, { name, avatar_url: avatarUrl });
-    // toast.success("Profile updated!");
+    setIsUpdating(true); // Add loading state if desired
+
+    // Simulate API call
+    setTimeout(() => {
+      // In a real app with Supabase:
+      // Call an updateProfile function (e.g., from userUtils)
+      // await updateProfile(userId, { name, avatar_url: avatarUrl });
+      
+      // Update mock user data (if using window.mockUsers)
+      if (userId && window.mockUsers) {
+         const userIndex = window.mockUsers.findIndex(u => u.id === userId);
+         if (userIndex !== -1) {
+            window.mockUsers[userIndex].name = name;
+            // Note: Avatar update would require more complex mock logic or backend
+         }
+      }
+      
+      toast.success("Profile updated successfully (mock)!");
+      setIsUpdating(false);
+    }, 1000); // Simulate 1 second delay
   };
+  
+  const [isUpdating, setIsUpdating] = useState(false); // Add loading state
 
   return (
     <div className="container mx-auto px-4 py-8 space-y-8">
@@ -78,8 +96,8 @@ const SettingsPage = () => {
                 <Input value={userRole || 'N/A'} disabled />
               </div>
 
-            <Button type="submit">
-              <Edit className="mr-2 h-4 w-4" /> Save Profile Changes (Mock)
+            <Button type="submit" disabled={isUpdating}>
+              {isUpdating ? "Saving..." : <><Edit className="mr-2 h-4 w-4" /> Save Profile Changes (Mock)</>}
             </Button>
           </form>
         </CardContent>
