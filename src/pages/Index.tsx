@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 // Import necessary icons
 import { Building, Package, Users, LayoutDashboard, ArrowRight, FileSpreadsheet, ShoppingBag, Zap, UsersRound, BarChart3, Boxes } from "lucide-react"; 
 import { useNavigate } from "react-router-dom"; 
+import { toast } from 'sonner'; // Added toast import
 // Removed recharts imports as they are not used in this version
 
 const Index = () => {
@@ -36,9 +37,13 @@ const Index = () => {
                      {t('homepage.startFreeTrial')}
                   </Button>
                   {/* Use translation for Learn More */}
-                  <Button size="lg" variant="outline" onClick={() => {/* Scroll to features or open modal */}}> 
+                  <Button size="lg" variant="outline" onClick={() => {/* Scroll to features or open modal */}} className="hover:bg-muted/50 transition-colors"> 
                      {t('navbar.learnMore')} 
                   </Button>
+                   {/* Added Request Demo button */}
+                   <Button size="lg" variant="secondary" onClick={() => toast.info("Demo request feature coming soon!")} className="hover:brightness-90 transition-all">
+                     {t('navbar.requestDemo')}
+                   </Button>
                 </div>
               </div>
               {/* Placeholder for Hero Image/Illustration */}
@@ -62,21 +67,24 @@ const Index = () => {
               </div>
             </div>
              <div className="mx-auto grid max-w-5xl items-start gap-8 sm:grid-cols-2 md:gap-12 lg:grid-cols-3 lg:gap-16 mt-12">
-              <div className="grid gap-1 text-center md:text-left">
+              {/* Added hover effect */}
+              <div className="grid gap-1 text-center md:text-left p-4 rounded-lg hover:bg-card transition-colors">
                  <div className="flex justify-center md:justify-start"><Zap className="h-8 w-8 text-primary mb-2" /></div>
                 <h3 className="text-lg font-bold">{t('homepage.benefit1Title')}</h3>
                 <p className="text-sm text-muted-foreground">
                   {t('homepage.benefit1Desc')}
                 </p>
               </div>
-              <div className="grid gap-1 text-center md:text-left">
+              {/* Added hover effect */}
+              <div className="grid gap-1 text-center md:text-left p-4 rounded-lg hover:bg-card transition-colors">
                  <div className="flex justify-center md:justify-start"><UsersRound className="h-8 w-8 text-primary mb-2" /></div>
                 <h3 className="text-lg font-bold">{t('homepage.benefit2Title')}</h3>
                 <p className="text-sm text-muted-foreground">
                   {t('homepage.benefit2Desc')}
                 </p>
               </div>
-              <div className="grid gap-1 text-center md:text-left">
+              {/* Added hover effect */}
+              <div className="grid gap-1 text-center md:text-left p-4 rounded-lg hover:bg-card transition-colors">
                  <div className="flex justify-center md:justify-start"><BarChart3 className="h-8 w-8 text-primary mb-2" /></div>
                 <h3 className="text-lg font-bold">{t('homepage.benefit3Title')}</h3>
                 <p className="text-sm text-muted-foreground">
@@ -101,9 +109,9 @@ const Index = () => {
              </div>
              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 {/* Feature Card: Projects */}
-                <Card className="hover:shadow-lg transition-shadow duration-300 flex flex-col"> {/* Added flex flex-col */}
+                <Card className="hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex flex-col"> 
                    <CardHeader className="items-center text-center">
-                      <div className="bg-primary/10 p-3 rounded-full mb-3 inline-block">
+                      <div className="bg-primary/10 p-3 rounded-full mb-3 inline-block transition-transform group-hover:scale-110">
                          <FileSpreadsheet className="h-8 w-8 text-primary" />
                       </div>
                       <CardTitle>{t('homepage.projects')}</CardTitle>
@@ -118,9 +126,9 @@ const Index = () => {
                    </CardFooter>
                 </Card>
                  {/* Feature Card: Materials */}
-                 <Card className="hover:shadow-lg transition-shadow duration-300 flex flex-col">
+                 <Card className="hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex flex-col">
                    <CardHeader className="items-center text-center">
-                      <div className="bg-blue-500/10 p-3 rounded-full mb-3 inline-block">
+                      <div className="bg-blue-500/10 p-3 rounded-full mb-3 inline-block transition-transform group-hover:scale-110">
                          <Package className="h-8 w-8 text-blue-500" />
                       </div>
                       <CardTitle>{t('homepage.materials')}</CardTitle>
@@ -135,9 +143,9 @@ const Index = () => {
                    </CardFooter>
                  </Card>
                  {/* Feature Card: Suppliers */}
-                 <Card className="hover:shadow-lg transition-shadow duration-300 flex flex-col">
+                 <Card className="hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex flex-col">
                    <CardHeader className="items-center text-center">
-                      <div className="bg-green-500/10 p-3 rounded-full mb-3 inline-block">
+                      <div className="bg-green-500/10 p-3 rounded-full mb-3 inline-block transition-transform group-hover:scale-110">
                          <Building className="h-8 w-8 text-green-500" />
                       </div>
                       <CardTitle>{t('homepage.suppliers')}</CardTitle>
@@ -152,9 +160,9 @@ const Index = () => {
                    </CardFooter>
                  </Card>
                  {/* Feature Card: Users */}
-                 <Card className="hover:shadow-lg transition-shadow duration-300 flex flex-col">
+                 <Card className="hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex flex-col">
                    <CardHeader className="items-center text-center">
-                      <div className="bg-purple-500/10 p-3 rounded-full mb-3 inline-block">
+                      <div className="bg-purple-500/10 p-3 rounded-full mb-3 inline-block transition-transform group-hover:scale-110">
                          <Users className="h-8 w-8 text-purple-500" />
                       </div>
                       <CardTitle>{t('homepage.users')}</CardTitle>
@@ -181,19 +189,19 @@ const Index = () => {
                 {t('homepage.howItWorksDesc')}
               </p>
             </div>
-            <div className="mx-auto w-full max-w-lg grid sm:grid-cols-3 gap-4 mt-8">
+             <div className="mx-auto w-full max-w-lg grid sm:grid-cols-3 gap-4 mt-8">
                {/* Step 1 */}
-               <div className="flex flex-col items-center gap-2 p-4">
+               <div className="flex flex-col items-center gap-2 p-4 border border-transparent rounded-lg hover:border-primary/20 hover:bg-card transition-colors">
                   <div className="bg-primary text-primary-foreground rounded-full h-10 w-10 flex items-center justify-center font-bold text-lg">1</div>
                   <p className="text-sm font-medium mt-2">{t('homepage.step1')}</p>
                </div>
                 {/* Step 2 */}
-                <div className="flex flex-col items-center gap-2 p-4">
+                <div className="flex flex-col items-center gap-2 p-4 border border-transparent rounded-lg hover:border-primary/20 hover:bg-card transition-colors">
                   <div className="bg-primary text-primary-foreground rounded-full h-10 w-10 flex items-center justify-center font-bold text-lg">2</div>
                   <p className="text-sm font-medium mt-2">{t('homepage.step2')}</p>
                </div>
                 {/* Step 3 */}
-                <div className="flex flex-col items-center gap-2 p-4">
+                <div className="flex flex-col items-center gap-2 p-4 border border-transparent rounded-lg hover:border-primary/20 hover:bg-card transition-colors">
                   <div className="bg-primary text-primary-foreground rounded-full h-10 w-10 flex items-center justify-center font-bold text-lg">3</div>
                   <p className="text-sm font-medium mt-2">{t('homepage.step3')}</p>
                </div>
@@ -206,19 +214,19 @@ const Index = () => {
            <div className="container px-4 md:px-6">
              <h2 className="text-3xl font-bold tracking-tighter text-center sm:text-4xl md:text-5xl mb-12">{t('homepage.testimonialsTitle')}</h2>
              <div className="grid gap-6 md:grid-cols-3">
-               <Card>
+               <Card className="hover:shadow-lg transition-shadow duration-300">
                  <CardContent className="p-6">
                    <p className="text-muted-foreground italic">"{t('homepage.testimonial1')}"</p>
                    <p className="mt-4 font-semibold">- {t('homepage.testimonial1Name')}</p>
                  </CardContent>
                </Card>
-               <Card>
+               <Card className="hover:shadow-lg transition-shadow duration-300">
                  <CardContent className="p-6">
                    <p className="text-muted-foreground italic">"{t('homepage.testimonial2')}"</p>
                    <p className="mt-4 font-semibold">- {t('homepage.testimonial2Name')}</p>
                  </CardContent>
                </Card>
-               <Card>
+               <Card className="hover:shadow-lg transition-shadow duration-300">
                  <CardContent className="p-6">
                    <p className="text-muted-foreground italic">"{t('homepage.testimonial3')}"</p>
                    <p className="mt-4 font-semibold">- {t('homepage.testimonial3Name')}</p>
