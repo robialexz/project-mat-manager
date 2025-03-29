@@ -11,8 +11,14 @@ import ProjectDetails from "./pages/ProjectDetails";
 import Users from "./pages/Users";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
+import { generateMockProjects } from "./utils/materialUtils";
 
 const queryClient = new QueryClient();
+
+// Initialize mock projects in the window object for global access
+if (typeof window !== 'undefined') {
+  window.mockProjects = generateMockProjects(6);
+}
 
 // Create authentication context
 interface AuthContextType {
