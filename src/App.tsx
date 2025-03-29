@@ -16,7 +16,9 @@ import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import SettingsPage from "./pages/Settings"; 
 import ImportMaterialsPage from "./pages/ImportMaterials"; 
-import MaterialHistoryPage from "./pages/MaterialHistory"; // Import MaterialHistoryPage
+import MaterialHistoryPage from "./pages/MaterialHistory"; 
+import CalendarPage from "./pages/Calendar"; 
+import MessagesPage from "./pages/Messages"; // Import MessagesPage
 import { generateMockProjects } from "./utils/userUtils"; 
 import AppLayout from "./components/AppLayout";
 import { v4 as uuidv4 } from "uuid";
@@ -231,12 +233,10 @@ const App = () => {
                 <Route path="/users" element={<Users />} />
                 <Route path="/settings" element={<SettingsPage />} /> 
                 <Route path="/import-materials" element={<ImportMaterialsPage />} /> 
-                {/* Add route for MaterialHistoryPage */}
                 <Route path="/material-history" element={<MaterialHistoryPage />} /> 
-                {/* Keep placeholders for other routes */}
-                <Route path="/calendar" element={<div className="container mx-auto p-8"><h1 className="text-3xl font-bold">Calendar (Coming Soon)</h1></div>} />
-                <Route path="/messages" element={<div className="container mx-auto p-8"><h1 className="text-3xl font-bold">Messages (Coming Soon)</h1></div>} />
-                 {/* Removed old placeholder settings route */}
+                <Route path="/calendar" element={<CalendarPage />} /> 
+                {/* Update route for MessagesPage */}
+                <Route path="/messages" element={<MessagesPage />} /> 
               </Route>
               
               <Route path="*" element={<NotFound />} />
