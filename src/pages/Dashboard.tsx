@@ -5,8 +5,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ProjectCard } from '@/components/ProjectCard';
-import { Navbar } from '@/components/Navbar';
+import ProjectCard from '@/components/ProjectCard';
+import Navbar from '@/components/Navbar';
 import { generateMockProjects, getProjectSummary } from '@/utils/materialUtils';
 import { Package, Search, PlusCircle, Users, Building } from 'lucide-react';
 import MaterialCategorySummary from '@/components/MaterialCategorySummary';
