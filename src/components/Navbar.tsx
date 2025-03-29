@@ -157,7 +157,6 @@ const Navbar = () => {
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
                       <p className="text-sm font-medium leading-none">
-                        {/* Placeholder for name */}
                         {userEmail} 
                       </p>
                       <p className="text-xs leading-none text-muted-foreground">
@@ -166,6 +165,7 @@ const Navbar = () => {
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
+                  {/* Ensure Settings link is present */}
                   <DropdownMenuItem asChild>
                      <Link to="/settings">
                        <Settings className="mr-2 h-4 w-4" />

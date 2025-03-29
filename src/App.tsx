@@ -14,6 +14,7 @@ import SupplierDetails from "./pages/SupplierDetails";
 import Users from "./pages/Users";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
+import SettingsPage from "./pages/Settings"; // Import SettingsPage
 import { generateMockProjects } from "./utils/userUtils"; // Corrected path
 import AppLayout from "./components/AppLayout";
 import { v4 as uuidv4 } from "uuid";
@@ -226,9 +227,12 @@ const App = () => {
                 <Route path="/suppliers" element={<Suppliers />} />
                 <Route path="/suppliers/:id" element={<SupplierDetails />} />
                 <Route path="/users" element={<Users />} />
+                {/* Add route for SettingsPage */}
+                <Route path="/settings" element={<SettingsPage />} /> 
+                {/* Keep placeholders for other routes */}
                 <Route path="/calendar" element={<div className="container mx-auto p-8"><h1 className="text-3xl font-bold">Calendar (Coming Soon)</h1></div>} />
                 <Route path="/messages" element={<div className="container mx-auto p-8"><h1 className="text-3xl font-bold">Messages (Coming Soon)</h1></div>} />
-                <Route path="/settings" element={<div className="container mx-auto p-8"><h1 className="text-3xl font-bold">Settings (Coming Soon)</h1></div>} />
+                 {/* Removed old placeholder settings route */}
               </Route>
               
               <Route path="*" element={<NotFound />} />
