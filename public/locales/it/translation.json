@@ -13,9 +13,14 @@
         "history": "Storico",
         "resources": "Risorse",
         "aboutUs": "Chi Siamo",
-        "register": "Registrati"
+        "register": "Registrati",
+        "learnMore": "Scopri di Più",
+        "requestDemo": "Richiedi Demo"
       },
       "homepage": {
+        "heroBadge": "Gestione Edilizia Semplificata",
+        "heroTitle": "Costruisci in Modo Intelligente, Non Difficile con ConstruxHub",
+        "heroSubtitle": "Smetti di destreggiarti tra fogli di calcolo ed email. Centralizza i dati di progetto, traccia i materiali, gestisci i fornitori e collabora senza problemi. Inizia gratuitamente!",
         "welcomeTitle": "Benvenuto nel Gestore Materiali",
         "welcomeSubtitle": "Gestisci i tuoi progetti, materiali e fornitori in un unico posto.",
         "startFreeTrial": "Inizia Prova Gratuita",
@@ -39,6 +44,36 @@
         "viewSuppliers": "Vedi Fornitori",
         "users": "Utenti",
         "usersFeatureDescription": "Gestisci gli account utente, i ruoli e le autorizzazioni all'interno dell'applicazione.",
-        "viewUsers": "Vedi Utenti"
-      }
+        "viewUsers": "Vedi Utenti",
+        "benefitsTitle": "Perché Scegliere ConstruxHub?",
+        "benefitsHeadline": "Ottimizza il Tuo Flusso di Lavoro Edile",
+        "benefitsDescription": "La nostra piattaforma fornisce gli strumenti necessari per gestire i progetti in modo efficiente, ridurre gli errori e migliorare la collaborazione dal cantiere all'ufficio.",
+        "benefit1Title": "Maggiore Efficienza",
+        "benefit1Desc": "Centralizza tutte le informazioni del progetto, riducendo il tempo speso nella ricerca di dati e minimizzando i ritardi.",
+        "benefit2Title": "Collaborazione Migliorata",
+        "benefit2Desc": "Mantieni l'intero team, inclusi fornitori e clienti, sulla stessa pagina con aggiornamenti in tempo reale.",
+        "benefit3Title": "Controllo Migliore",
+        "benefit3Desc": "Ottieni una chiara visibilità sullo stato dei materiali, sulle prestazioni dei fornitori e sull'avanzamento del progetto.",
+        "featuresTitle": "Funzionalità Principali",
+        "featuresHeadline": "Tutto Ciò di Cui Hai Bisogno in un Unico Posto",
+        "featuresDescription": "Esplora le funzionalità chiave progettate per semplificare le tue attività di gestione edile.",
+        "howItWorksTitle": "Inizia in Pochi Minuti",
+        "howItWorksDesc": "La nostra piattaforma intuitiva rende semplice la gestione dei tuoi progetti di costruzione.",
+        "step1": "Registrati gratuitamente",
+        "step2": "Crea il tuo primo progetto",
+        "step3": "Inizia a gestire!",
+        "testimonialsTitle": "Scelto da Costruttori Come Te",
+        "testimonial1": "ConstruxHub ha rivoluzionato il modo in cui gestiamo i materiali in cantiere. Un enorme risparmio di tempo!",
+        "testimonial1Name": "Alex G., Capo Cantiere",
+        "testimonial2": "Finalmente uno strumento semplice per tracciare fornitori e ordini senza complessi fogli di calcolo.",
+        "testimonial2Name": "Maria P., Coordinatrice di Progetto",
+        "testimonial3": "Le funzionalità di collaborazione sono fantastiche per tenere aggiornato l'intero team.",
+        "testimonial3Name": "David R., Responsabile Costruzioni",
+        "finalCtaTitle": "Pronto a Semplificare il Tuo Flusso di Lavoro?",
+        "finalCtaDesc": "Registrati oggi e sperimenta la differenza. Nessuna carta di credito richiesta per la prova gratuita."
+      },
+       "footer": {
+         "terms": "Termini di Servizio",
+         "privacy": "Informativa sulla Privacy"
+       }
     }

@@ -13,9 +13,14 @@
         "history": "Istoric",
         "resources": "Resurse",
         "aboutUs": "Despre Noi",
-        "register": "Înregistrare"
+        "register": "Înregistrare",
+        "learnMore": "Află Mai Mult",
+        "requestDemo": "Cere Demo"
       },
       "homepage": {
+        "heroBadge": "Management Construcții Simplificat",
+        "heroTitle": "Construiește Inteligent, Nu Greu cu ConstruxHub",
+        "heroSubtitle": "Nu mai jongla cu foi de calcul și emailuri. Centralizează datele proiectului, urmărește materialele, gestionează furnizorii și colaborează fără probleme. Începe gratuit!",
         "welcomeTitle": "Bun venit la Managerul de Materiale",
         "welcomeSubtitle": "Gestionați proiectele, materialele și furnizorii într-un singur loc.",
         "startFreeTrial": "Începe Perioada Gratuită",
@@ -39,6 +44,36 @@
         "viewSuppliers": "Vezi Furnizori",
         "users": "Utilizatori",
         "usersFeatureDescription": "Gestionați conturile de utilizator, rolurile și permisiunile în cadrul aplicației.",
-        "viewUsers": "Vezi Utilizatori"
-      }
+        "viewUsers": "Vezi Utilizatori",
+        "benefitsTitle": "De ce să alegi ConstruxHub?",
+        "benefitsHeadline": "Optimizează-ți Fluxul de Lucru în Construcții",
+        "benefitsDescription": "Platforma noastră oferă instrumentele necesare pentru a gestiona eficient proiectele, a reduce erorile și a îmbunătăți colaborarea de la șantier la birou.",
+        "benefit1Title": "Eficiență Crescută",
+        "benefit1Desc": "Centralizează toate informațiile proiectului, reducând timpul petrecut căutând date și minimizând întârzierile.",
+        "benefit2Title": "Colaborare Îmbunătățită",
+        "benefit2Desc": "Menține întreaga echipă, inclusiv furnizorii și clienții, pe aceeași pagină cu actualizări în timp real.",
+        "benefit3Title": "Control Mai Bun",
+        "benefit3Desc": "Obține vizibilitate clară asupra stării materialelor, performanței furnizorilor și progresului proiectului.",
+        "featuresTitle": "Funcționalități Principale",
+        "featuresHeadline": "Tot ce Ai Nevoie într-un Singur Loc",
+        "featuresDescription": "Explorează funcționalitățile cheie concepute pentru a simplifica sarcinile de management în construcții.",
+        "howItWorksTitle": "Începe în Câteva Minute",
+        "howItWorksDesc": "Platforma noastră intuitivă face gestionarea proiectelor de construcții simplă.",
+        "step1": "Înregistrează-te gratuit",
+        "step2": "Creează primul proiect",
+        "step3": "Începe să gestionezi!",
+        "testimonialsTitle": "Apreciat de Constructori ca Tine",
+        "testimonial1": "ConstruxHub a revoluționat modul în care gestionăm materialele pe șantier. Economie uriașă de timp!",
+        "testimonial1Name": "Alex G., Șef Șantier",
+        "testimonial2": "În sfârșit, un instrument simplu pentru a urmări furnizorii și comenzile fără foi de calcul complexe.",
+        "testimonial2Name": "Maria P., Coordonator Proiect",
+        "testimonial3": "Funcționalitățile de colaborare sunt fantastice pentru a ține întreaga echipă la curent.",
+        "testimonial3Name": "David R., Lider Construcții",
+        "finalCtaTitle": "Ești Gata să-ți Simplifici Fluxul de Lucru?",
+        "finalCtaDesc": "Înregistrează-te astăzi și experimentează diferența. Nu este necesar cardul de credit pentru perioada de probă gratuită."
+      },
+       "footer": {
+         "terms": "Termeni și Condiții",
+         "privacy": "Politică de Confidențialitate"
+       }
     }

@@ -13,10 +13,15 @@
         "history": "History",
         "resources": "Resources",
         "aboutUs": "About Us",
-        "register": "Register" 
+        "register": "Register",
+        "learnMore": "Learn More",
+        "requestDemo": "Request Demo"
       },
       "homepage": {
-        "welcomeTitle": "Welcome to the Material Manager",
+        "heroBadge": "Construction Management Simplified",
+        "heroTitle": "Build Smarter, Not Harder with ConstruxHub",
+        "heroSubtitle": "Stop juggling spreadsheets and emails. Centralize project data, track materials, manage suppliers, and collaborate seamlessly. Get started for free!",
+        "welcomeTitle": "Welcome to the Material Manager", 
         "welcomeSubtitle": "Manage your projects, materials, and suppliers in one place.",
         "startFreeTrial": "Start Free Trial",
         "viewDashboard": "View Dashboard",
@@ -39,6 +44,36 @@
         "viewSuppliers": "View Suppliers",
         "users": "Users",
         "usersFeatureDescription": "Manage user accounts, roles, and permissions within the application.",
-        "viewUsers": "View Users"
-      }
+        "viewUsers": "View Users",
+        "benefitsTitle": "Why Choose ConstruxHub?",
+        "benefitsHeadline": "Streamline Your Construction Workflow",
+        "benefitsDescription": "Our platform provides the tools you need to manage projects efficiently, reduce errors, and improve collaboration from site to office.",
+        "benefit1Title": "Increased Efficiency",
+        "benefit1Desc": "Centralize all project information, reducing time spent searching for data and minimizing delays.",
+        "benefit2Title": "Improved Collaboration",
+        "benefit2Desc": "Keep your entire team, including suppliers and clients, on the same page with real-time updates.",
+        "benefit3Title": "Better Control",
+        "benefit3Desc": "Gain clear visibility into material status, supplier performance, and project progress.",
+        "featuresTitle": "Core Features",
+        "featuresHeadline": "Everything You Need in One Place",
+        "featuresDescription": "Explore the key functionalities designed to simplify your construction management tasks.",
+        "howItWorksTitle": "Get Started in Minutes",
+        "howItWorksDesc": "Our intuitive platform makes managing your construction projects straightforward.",
+        "step1": "Sign up for free",
+        "step2": "Create your project",
+        "step3": "Start managing!",
+        "testimonialsTitle": "Trusted by Builders Like You",
+        "testimonial1": "ConstruxHub has revolutionized how we manage materials on site. Huge time saver!",
+        "testimonial1Name": "Alex G., Site Manager",
+        "testimonial2": "Finally, a simple tool to track suppliers and orders without complex spreadsheets.",
+        "testimonial2Name": "Maria P., Project Coordinator",
+        "testimonial3": "The collaboration features are fantastic for keeping the whole team updated.",
+        "testimonial3Name": "David R., Construction Lead",
+        "finalCtaTitle": "Ready to Simplify Your Workflow?",
+        "finalCtaDesc": "Sign up today and experience the difference. No credit card required for the free trial."
+      },
+       "footer": {
+         "terms": "Terms of Service",
+         "privacy": "Privacy Policy"
+       }
     }

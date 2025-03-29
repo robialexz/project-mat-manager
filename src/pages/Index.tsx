@@ -33,11 +33,11 @@ const Index = () => {
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
                   <Button size="lg" onClick={() => navigate('/login')}>
-                     {t('homepage.startFreeTrial', { defaultValue: "Start Free Trial"})}
+                     {t('homepage.startFreeTrial')}
                   </Button>
-                  {/* Changed to a "Learn More" button or similar */}
+                  {/* Use translation for Learn More */}
                   <Button size="lg" variant="outline" onClick={() => {/* Scroll to features or open modal */}}> 
-                     {t('homepage.learnMore', { defaultValue: "Learn More"})} 
+                     {t('navbar.learnMore')} 
                   </Button>
                 </div>
               </div>
@@ -61,26 +61,26 @@ const Index = () => {
                 </p>
               </div>
             </div>
-            <div className="mx-auto grid max-w-5xl items-start gap-8 sm:grid-cols-2 md:gap-12 lg:grid-cols-3 lg:gap-16 mt-12">
+             <div className="mx-auto grid max-w-5xl items-start gap-8 sm:grid-cols-2 md:gap-12 lg:grid-cols-3 lg:gap-16 mt-12">
               <div className="grid gap-1 text-center md:text-left">
                  <div className="flex justify-center md:justify-start"><Zap className="h-8 w-8 text-primary mb-2" /></div>
-                <h3 className="text-lg font-bold">{t('homepage.benefit1Title', { defaultValue: "Increased Efficiency"})}</h3>
+                <h3 className="text-lg font-bold">{t('homepage.benefit1Title')}</h3>
                 <p className="text-sm text-muted-foreground">
-                  {t('homepage.benefit1Desc', { defaultValue: "Centralize all project information, reducing time spent searching for data and minimizing delays."})}
+                  {t('homepage.benefit1Desc')}
                 </p>
               </div>
               <div className="grid gap-1 text-center md:text-left">
                  <div className="flex justify-center md:justify-start"><UsersRound className="h-8 w-8 text-primary mb-2" /></div>
-                <h3 className="text-lg font-bold">{t('homepage.benefit2Title', { defaultValue: "Improved Collaboration"})}</h3>
+                <h3 className="text-lg font-bold">{t('homepage.benefit2Title')}</h3>
                 <p className="text-sm text-muted-foreground">
-                  {t('homepage.benefit2Desc', { defaultValue: "Keep your entire team, including suppliers and clients, on the same page with real-time updates."})}
+                  {t('homepage.benefit2Desc')}
                 </p>
               </div>
               <div className="grid gap-1 text-center md:text-left">
                  <div className="flex justify-center md:justify-start"><BarChart3 className="h-8 w-8 text-primary mb-2" /></div>
-                <h3 className="text-lg font-bold">{t('homepage.benefit3Title', { defaultValue: "Better Control"})}</h3>
+                <h3 className="text-lg font-bold">{t('homepage.benefit3Title')}</h3>
                 <p className="text-sm text-muted-foreground">
-                  {t('homepage.benefit3Desc', { defaultValue: "Gain clear visibility into material status, supplier performance, and project progress."})}
+                  {t('homepage.benefit3Desc')}
                 </p>
               </div>
             </div>
@@ -92,10 +92,10 @@ const Index = () => {
           <div className="container px-4 md:px-6 space-y-12">
              <div className="flex flex-col items-center justify-center space-y-4 text-center">
                <div className="space-y-2">
-                 <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">{t('homepage.featuresTitle', { defaultValue: "Core Features"})}</div>
-                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">{t('homepage.featuresHeadline', { defaultValue: "Everything You Need in One Place"})}</h2>
+                 <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">{t('homepage.featuresTitle')}</div>
+                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">{t('homepage.featuresHeadline')}</h2>
                  <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                   {t('homepage.featuresDescription', { defaultValue: "Explore the key functionalities designed to simplify your construction management tasks."})}
+                   {t('homepage.featuresDescription')}
                  </p>
                </div>
              </div>
@@ -106,14 +106,14 @@ const Index = () => {
                       <div className="bg-primary/10 p-3 rounded-full mb-3 inline-block">
                          <FileSpreadsheet className="h-8 w-8 text-primary" />
                       </div>
-                      <CardTitle>{t('homepage.projects', { defaultValue: "Projects"})}</CardTitle>
+                      <CardTitle>{t('homepage.projects')}</CardTitle>
                    </CardHeader>
-                   <CardContent className="text-center flex-grow"> {/* Added flex-grow */}
-                      <p className="text-muted-foreground text-sm mb-4">{t('homepage.projectsFeatureDescription', { defaultValue: "Organize, track progress, and manage all aspects of your construction projects efficiently."})}</p>
+                   <CardContent className="text-center flex-grow"> 
+                      <p className="text-muted-foreground text-sm mb-4">{t('homepage.projectsFeatureDescription')}</p>
                    </CardContent>
-                   <CardFooter className="justify-center"> {/* Added CardFooter */}
+                   <CardFooter className="justify-center"> 
                       <Button variant="link" className="text-primary" onClick={() => navigate('/projects')}> 
-                         {t('homepage.viewProjects', { defaultValue: "View Projects"})} <ArrowRight className="ml-1 h-4 w-4"/>
+                         {t('homepage.viewProjects')} <ArrowRight className="ml-1 h-4 w-4"/>
                       </Button>
                    </CardFooter>
                 </Card>
@@ -123,14 +123,14 @@ const Index = () => {
                       <div className="bg-blue-500/10 p-3 rounded-full mb-3 inline-block">
                          <Package className="h-8 w-8 text-blue-500" />
                       </div>
-                      <CardTitle>{t('homepage.materials', { defaultValue: "Materials"})}</CardTitle>
+                      <CardTitle>{t('homepage.materials')}</CardTitle>
                    </CardHeader>
                    <CardContent className="text-center flex-grow">
-                      <p className="text-muted-foreground text-sm mb-4">{t('homepage.materialsFeatureDescription', { defaultValue: "Keep a detailed inventory of materials, manage stock levels, and track usage across projects."})}</p>
+                      <p className="text-muted-foreground text-sm mb-4">{t('homepage.materialsFeatureDescription')}</p>
                    </CardContent>
                     <CardFooter className="justify-center">
                       <Button variant="link" disabled className="text-muted-foreground">
-                         {t('homepage.viewMaterials', { defaultValue: "View Materials"})} (Soon)
+                         {t('homepage.viewMaterials')} (Soon)
                       </Button>
                    </CardFooter>
                  </Card>
@@ -140,14 +140,14 @@ const Index = () => {
                       <div className="bg-green-500/10 p-3 rounded-full mb-3 inline-block">
                          <Building className="h-8 w-8 text-green-500" />
                       </div>
-                      <CardTitle>{t('homepage.suppliers', { defaultValue: "Suppliers"})}</CardTitle>
+                      <CardTitle>{t('homepage.suppliers')}</CardTitle>
                    </CardHeader>
                    <CardContent className="text-center flex-grow">
-                      <p className="text-muted-foreground text-sm mb-4">{t('homepage.suppliersFeatureDescription', { defaultValue: "Maintain a database of your suppliers, manage contacts, and track performance."})}</p>
+                      <p className="text-muted-foreground text-sm mb-4">{t('homepage.suppliersFeatureDescription')}</p>
                    </CardContent>
                     <CardFooter className="justify-center">
                       <Button variant="link" className="text-primary" onClick={() => navigate('/suppliers')}>
-                         {t('homepage.viewSuppliers', { defaultValue: "View Suppliers"})} <ArrowRight className="ml-1 h-4 w-4"/>
+                         {t('homepage.viewSuppliers')} <ArrowRight className="ml-1 h-4 w-4"/>
                       </Button>
                    </CardFooter>
                  </Card>
@@ -157,14 +157,14 @@ const Index = () => {
                       <div className="bg-purple-500/10 p-3 rounded-full mb-3 inline-block">
                          <Users className="h-8 w-8 text-purple-500" />
                       </div>
-                      <CardTitle>{t('homepage.users', { defaultValue: "Users"})}</CardTitle>
+                      <CardTitle>{t('homepage.users')}</CardTitle>
                    </CardHeader>
                    <CardContent className="text-center flex-grow">
-                      <p className="text-muted-foreground text-sm mb-4">{t('homepage.usersFeatureDescription', { defaultValue: "Manage user accounts, roles, and permissions within the application."})}</p>
+                      <p className="text-muted-foreground text-sm mb-4">{t('homepage.usersFeatureDescription')}</p>
                    </CardContent>
                     <CardFooter className="justify-center">
                       <Button variant="link" className="text-primary" onClick={() => navigate('/users')}>
-                         {t('homepage.viewUsers', { defaultValue: "View Users"})} <ArrowRight className="ml-1 h-4 w-4"/>
+                         {t('homepage.viewUsers')} <ArrowRight className="ml-1 h-4 w-4"/>
                       </Button>
                    </CardFooter>
                  </Card>
@@ -176,26 +176,26 @@ const Index = () => {
         <section className="w-full py-12 md:py-24 lg:py-32 bg-muted/40">
           <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6">
             <div className="space-y-3">
-              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">{t('homepage.howItWorksTitle', { defaultValue: "Get Started in Minutes"})}</h2>
+              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">{t('homepage.howItWorksTitle')}</h2>
               <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                {t('homepage.howItWorksDesc', { defaultValue: "Our intuitive platform makes managing your construction projects straightforward."})}
+                {t('homepage.howItWorksDesc')}
               </p>
             </div>
             <div className="mx-auto w-full max-w-lg grid sm:grid-cols-3 gap-4 mt-8">
                {/* Step 1 */}
                <div className="flex flex-col items-center gap-2 p-4">
                   <div className="bg-primary text-primary-foreground rounded-full h-10 w-10 flex items-center justify-center font-bold text-lg">1</div>
-                  <p className="text-sm font-medium mt-2">{t('homepage.step1', { defaultValue: "Sign up for free"})}</p>
+                  <p className="text-sm font-medium mt-2">{t('homepage.step1')}</p>
                </div>
                 {/* Step 2 */}
                 <div className="flex flex-col items-center gap-2 p-4">
                   <div className="bg-primary text-primary-foreground rounded-full h-10 w-10 flex items-center justify-center font-bold text-lg">2</div>
-                  <p className="text-sm font-medium mt-2">{t('homepage.step2', { defaultValue: "Create your project"})}</p>
+                  <p className="text-sm font-medium mt-2">{t('homepage.step2')}</p>
                </div>
                 {/* Step 3 */}
                 <div className="flex flex-col items-center gap-2 p-4">
                   <div className="bg-primary text-primary-foreground rounded-full h-10 w-10 flex items-center justify-center font-bold text-lg">3</div>
-                  <p className="text-sm font-medium mt-2">{t('homepage.step3', { defaultValue: "Start managing!"})}</p>
+                  <p className="text-sm font-medium mt-2">{t('homepage.step3')}</p>
                </div>
             </div>
           </div>
@@ -204,24 +204,24 @@ const Index = () => {
          {/* Testimonials Section */}
          <section className="w-full py-12 md:py-24 lg:py-32">
            <div className="container px-4 md:px-6">
-             <h2 className="text-3xl font-bold tracking-tighter text-center sm:text-4xl md:text-5xl mb-12">{t('homepage.testimonialsTitle', { defaultValue: "Trusted by Builders Like You"})}</h2>
+             <h2 className="text-3xl font-bold tracking-tighter text-center sm:text-4xl md:text-5xl mb-12">{t('homepage.testimonialsTitle')}</h2>
              <div className="grid gap-6 md:grid-cols-3">
                <Card>
                  <CardContent className="p-6">
-                   <p className="text-muted-foreground italic">"{t('homepage.testimonial1', { defaultValue: "ConstruxHub has revolutionized how we manage materials on site. Huge time saver!"})}"</p>
-                   <p className="mt-4 font-semibold">- {t('homepage.testimonial1Name', { defaultValue: "Alex G., Site Manager"})}</p>
+                   <p className="text-muted-foreground italic">"{t('homepage.testimonial1')}"</p>
+                   <p className="mt-4 font-semibold">- {t('homepage.testimonial1Name')}</p>
                  </CardContent>
                </Card>
                <Card>
                  <CardContent className="p-6">
-                   <p className="text-muted-foreground italic">"{t('homepage.testimonial2', { defaultValue: "Finally, a simple tool to track suppliers and orders without complex spreadsheets."})}"</p>
-                   <p className="mt-4 font-semibold">- {t('homepage.testimonial2Name', { defaultValue: "Maria P., Project Coordinator"})}</p>
+                   <p className="text-muted-foreground italic">"{t('homepage.testimonial2')}"</p>
+                   <p className="mt-4 font-semibold">- {t('homepage.testimonial2Name')}</p>
                  </CardContent>
                </Card>
                <Card>
                  <CardContent className="p-6">
-                   <p className="text-muted-foreground italic">"{t('homepage.testimonial3', { defaultValue: "The collaboration features are fantastic for keeping the whole team updated."})}"</p>
-                   <p className="mt-4 font-semibold">- {t('homepage.testimonial3Name', { defaultValue: "David R., Construction Lead"})}</p>
+                   <p className="text-muted-foreground italic">"{t('homepage.testimonial3')}"</p>
+                   <p className="mt-4 font-semibold">- {t('homepage.testimonial3Name')}</p>
                  </CardContent>
                </Card>
              </div>
@@ -232,14 +232,14 @@ const Index = () => {
         <section className="w-full py-12 md:py-24 lg:py-32 border-t bg-gradient-to-tr from-primary/5 via-background to-secondary/5 dark:from-primary/10 dark:to-secondary/10">
           <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6">
             <div className="space-y-3">
-              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">{t('homepage.finalCtaTitle', { defaultValue: "Ready to Simplify Your Workflow?"})}</h2>
+              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">{t('homepage.finalCtaTitle')}</h2>
               <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                {t('homepage.finalCtaDesc', { defaultValue: "Sign up today and experience the difference. No credit card required for the free trial."})}
+                {t('homepage.finalCtaDesc')}
               </p>
             </div>
             <div className="mx-auto w-full max-w-sm space-y-2">
                <Button size="lg" onClick={() => navigate('/login')}>
-                  {t('homepage.startFreeTrial', { defaultValue: "Start Your Free Trial Now"})}
+                  {t('homepage.startFreeTrial')}
                </Button>
             </div>
           </div>
@@ -250,12 +250,11 @@ const Index = () => {
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
         <p className="text-xs text-muted-foreground">&copy; {new Date().getFullYear()} ConstruxHub. All rights reserved.</p>
         <nav className="sm:ml-auto flex gap-4 sm:gap-6">
-          {/* Use simple anchor tags for external/placeholder links */}
-          <a className="text-xs hover:underline underline-offset-4" href="#"> {/* Removed Link component */}
-            {t('footer.terms', { defaultValue: "Terms of Service"})}
+          <a className="text-xs hover:underline underline-offset-4" href="#"> 
+            {t('footer.terms')}
           </a>
-          <a className="text-xs hover:underline underline-offset-4" href="#"> {/* Removed Link component */}
-             {t('footer.privacy', { defaultValue: "Privacy Policy"})}
+          <a className="text-xs hover:underline underline-offset-4" href="#">
+             {t('footer.privacy')}
           </a>
         </nav>
       </footer>
