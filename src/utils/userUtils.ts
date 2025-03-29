@@ -205,3 +205,46 @@ export const getTeamProjects = (
   const teamIndex = parseInt(teamId.split('_')[1]);
   return projects.filter((_, index) => index % 2 === teamIndex % 2);
 };
+
+// New functions for authentication
+export const authenticateUser = (email: string, password: string): User | null => {
+  // In a real app, this would verify credentials against a database
+  // For this mock, we'll simulate authentication
+  const users = generateMockUsers();
+  const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+  
+  // Simulating password verification (in a real app this would be proper hashing)
+  if (user && password.length >= 6) {
+    return user;
+  }
+  
+  return null;
+};
+
+export const getUserById = (userId: string): User | null => {
+  const users = generateMockUsers();
+  return users.find(u => u.id === userId) || null;
+};
+
+export const getUserByEmail = (email: string): User | null => {
+  const users = generateMockUsers();
+  return users.find(u => u.email.toLowerCase() === email.toLowerCase()) || null;
+};
+
+export const getUserProjects = (userId: string): Project[] => {
+  // In a real app, this would query a database for projects the user is assigned to
+  const users = generateMockUsers();
+  const teams = generateMockTeams(users);
+  const teamMembers = generateMockTeamMembers(users, teams);
+  
+  // Get teams the user is a member of
+  const userTeams = getUserTeams(userId, teamMembers, teams);
+  
+  // Mock projects from materialUtils
+  const allProjects = window.mockProjects || [];
+  
+  // Filter projects by team membership
+  return userTeams.flatMap(team => 
+    getTeamProjects(team.id, allProjects)
+  );
+};

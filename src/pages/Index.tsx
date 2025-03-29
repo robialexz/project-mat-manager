@@ -1,4 +1,3 @@
-
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { 
@@ -17,6 +16,10 @@ import { Link } from 'react-router-dom';
 const Index = () => {
   const navigate = useNavigate();
   
+  const handleGetStarted = () => {
+    navigate('/login');
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-accent/10">
       {/* Nav Bar */}
@@ -60,7 +63,7 @@ const Index = () => {
           <Button
             size="lg"
             className="gap-2 hover-lift"
-            onClick={() => navigate('/login')}
+            onClick={handleGetStarted}
           >
             Get Started
             <ArrowRight className="h-4 w-4" />

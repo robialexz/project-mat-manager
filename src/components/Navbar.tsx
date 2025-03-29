@@ -1,16 +1,22 @@
-
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Menu, Home, Package, Users, FileSpreadsheet, Settings, Boxes, LogOut, LayoutDashboard } from 'lucide-react';
+import { useAuth } from "@/App";
 
 const Navbar = () => {
+  const { isAuthenticated, userEmail, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   const closeMenu = () => setMobileMenuOpen(false);
   
+  const handleLogout = () => {
+    logout();
+    window.location.href = "/";
+  };
+
   return (
     <nav className="border-b bg-background sticky top-0 z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
