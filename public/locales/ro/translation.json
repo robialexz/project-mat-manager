@@ -74,6 +74,16 @@
       },
        "footer": {
          "terms": "Termeni și Condiții",
-         "privacy": "Politică de Confidențialitate"
+         "privacy": "Politică de Confidențialitate",
+         "support": "Suport",
+         "pricing": "Prețuri"
+       },
+       "pages": {
+          "aboutUs": "Despre Noi",
+          "resources": "Resurse",
+          "support": "Suport",
+          "pricing": "Prețuri",
+          "terms": "Termeni și Condiții",
+          "privacy": "Politică de Confidențialitate"
        }
     }

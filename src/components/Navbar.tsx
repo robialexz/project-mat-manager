@@ -121,7 +121,7 @@ const Navbar = () => {
               // Unauthenticated Links
               <>
                  <NavLink 
-                  to="/resources" // Placeholder path
+                  to="/resources" // Correct path
                   className={({ isActive }) => 
                     `flex items-center px-3 py-2 rounded-md text-sm font-medium ${
                       isActive ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
@@ -132,7 +132,7 @@ const Navbar = () => {
                   {t('navbar.resources')}
                 </NavLink>
                  <NavLink 
-                  to="/about-us" // Placeholder path
+                  to="/about-us" // Correct path
                   className={({ isActive }) => 
                     `flex items-center px-3 py-2 rounded-md text-sm font-medium ${
                       isActive ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'

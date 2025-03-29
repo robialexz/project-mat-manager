@@ -18,7 +18,13 @@ import ImportMaterialsPage from "./pages/ImportMaterials";
 import MaterialHistoryPage from "./pages/MaterialHistory"; 
 import CalendarPage from "./pages/Calendar"; 
 import MessagesPage from "./pages/Messages"; 
-import { generateMockProjects, generateMockUsers, createUserMock } from "./utils/userUtils"; // Use correct mock functions
+import AboutUsPage from "./pages/AboutUs"; // Import new pages
+import ResourcesPage from "./pages/Resources";
+import SupportPage from "./pages/Support";
+import PricingPage from "./pages/Pricing";
+import TermsPage from "./pages/Terms";
+import PrivacyPage from "./pages/Privacy";
+import { generateMockProjects, generateMockUsers, createUserMock } from "./utils/userUtils"; 
 import AppLayout from "./components/AppLayout";
 import { v4 as uuidv4 } from "uuid";
 import { User } from "./types";
@@ -190,8 +196,15 @@ const App = () => {
           <Sonner />
           <BrowserRouter>
             <Routes>
+              {/* Public Routes */}
               <Route path="/" element={<Index />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/about-us" element={<AboutUsPage />} />
+              <Route path="/resources" element={<ResourcesPage />} />
+              <Route path="/support" element={<SupportPage />} />
+              <Route path="/pricing" element={<PricingPage />} />
+              <Route path="/terms" element={<TermsPage />} />
+              <Route path="/privacy" element={<PrivacyPage />} />
               
               {/* Protected routes */}
               <Route element={

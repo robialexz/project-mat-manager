@@ -74,6 +74,16 @@
       },
        "footer": {
          "terms": "Termini di Servizio",
-         "privacy": "Informativa sulla Privacy"
+         "privacy": "Informativa sulla Privacy",
+         "support": "Supporto",
+         "pricing": "Prezzi"
+       },
+       "pages": {
+          "aboutUs": "Chi Siamo",
+          "resources": "Risorse",
+          "support": "Supporto",
+          "pricing": "Prezzi",
+          "terms": "Termini di Servizio",
+          "privacy": "Informativa sulla Privacy"
        }
     }

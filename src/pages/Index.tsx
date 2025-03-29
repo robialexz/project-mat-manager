@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"; // Import Carousel
 // Import necessary icons
 import { Building, Package, Users, LayoutDashboard, ArrowRight, FileSpreadsheet, ShoppingBag, Zap, UsersRound, BarChart3, Boxes, Check, Lightbulb, Target } from "lucide-react"; 
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate, Link } from "react-router-dom"; // Import Link
 import { toast } from 'sonner'; 
 
 const Index = () => {
@@ -42,7 +42,8 @@ const Index = () => {
                   <Button size="lg" onClick={() => navigate('/login')} className="transition-transform hover:scale-105 shadow-lg hover:shadow-primary/30 duration-300">
                      {t('homepage.startFreeTrial')}
                   </Button>
-                  <Button size="lg" variant="outline" onClick={() => {/* Scroll to features */}} className="hover:bg-muted/50 transition-colors hover:scale-105"> 
+                  {/* Point Learn More to About Us page */}
+                  <Button size="lg" variant="outline" onClick={() => navigate('/about-us')} className="hover:bg-muted/50 transition-colors hover:scale-105"> 
                      {t('navbar.learnMore')} 
                   </Button>
                    <Button size="lg" variant="secondary" onClick={() => toast.info("Demo request feature coming soon!")} className="hover:brightness-110 transition-all hover:scale-105">
@@ -224,12 +225,20 @@ const Index = () => {
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
         <p className="text-xs text-muted-foreground">&copy; {new Date().getFullYear()} ConstruxHub. All rights reserved.</p>
         <nav className="sm:ml-auto flex gap-4 sm:gap-6">
-          <a className="text-xs hover:underline underline-offset-4" href="#"> 
+          {/* Use Link component for internal navigation */}
+          <Link className="text-xs hover:underline underline-offset-4" to="/terms"> 
             {t('footer.terms')}
-          </a>
-          <a className="text-xs hover:underline underline-offset-4" href="#">
+          </Link>
+          <Link className="text-xs hover:underline underline-offset-4" to="/privacy">
              {t('footer.privacy')}
-          </a>
+          </Link>
+           {/* Added Support and Pricing links */}
+           <Link className="text-xs hover:underline underline-offset-4" to="/support">
+             {t('footer.support')}
+          </Link>
+           <Link className="text-xs hover:underline underline-offset-4" to="/pricing">
+             {t('footer.pricing')}
+          </Link>
         </nav>
       </footer>
     </div>
