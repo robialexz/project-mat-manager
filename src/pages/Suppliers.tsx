@@ -1,8 +1,8 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Supplier } from '@/types/supplier';
-import { getAllSuppliers, addSupplier } from '@/utils/supplierUtils';
+// Use the mock functions for now, as Supabase functions are async
+import { getAllSuppliersMock as getAllSuppliers, addSupplierMock as addSupplier } from '@/utils/supplierUtils'; 
 import { 
   Card, 
   CardContent, 
@@ -89,11 +89,12 @@ const Suppliers = () => {
     },
   });
 
+  // Load suppliers using mock function
   useEffect(() => {
-    const loadSuppliers = async () => {
+    const loadSuppliers = () => { // Removed async as using mock
       try {
         setIsLoading(true);
-        const suppliersList = getAllSuppliers();
+        const suppliersList = getAllSuppliers(); // Use mock function
         setSuppliers(suppliersList);
         setFilteredSuppliers(suppliersList);
       } catch (error) {
@@ -107,10 +108,9 @@ const Suppliers = () => {
     loadSuppliers();
   }, []);
 
+  // Filter suppliers (remains the same)
   useEffect(() => {
-    // Filter suppliers based on search term and category
     let result = [...suppliers];
-    
     if (searchTerm) {
       result = result.filter(supplier => 
         supplier.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -118,24 +118,33 @@ const Suppliers = () => {
         supplier.category.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
-    
     if (categoryFilter !== 'all') {
       result = result.filter(supplier => supplier.category === categoryFilter);
     }
-    
     setFilteredSuppliers(result);
   }, [searchTerm, categoryFilter, suppliers]);
   
-  const onSubmit = (data: z.infer<typeof supplierFormSchema>) => {
-    try {
-      const newSupplier = addSupplier({
-        ...data,
-        rating: 0,
-        contacts: []
-      });
+      // Handle form submission using mock function
+      const onSubmit = (data: z.infer<typeof supplierFormSchema>) => {
+        try {
+          // Construct the object ensuring all required fields for Omit<Supplier, 'id' | 'createdAt' | 'updatedAt'> are present
+          // Use null for optional fields if they are empty strings
+          const newSupplierData: Omit<Supplier, 'id' | 'createdAt' | 'updatedAt'> = {
+            name: data.name,
+            address: data.address, 
+            phone: data.phone,     
+            email: data.email,     
+            category: data.category, 
+            website: data.website || null, // Use null for optional empty strings
+            notes: data.notes || null,     
+            rating: 0,             
+            contacts: []           
+          };
+          
+      const newSupplier = addSupplier(newSupplierData); // Use mock function
       
       setSuppliers(prev => [...prev, newSupplier]);
-      toast.success('Supplier added successfully');
+      toast.success('Supplier added successfully (mock)');
       setIsAddDialogOpen(false);
       form.reset();
     } catch (error) {
@@ -145,7 +154,7 @@ const Suppliers = () => {
   };
   
   // Extract unique categories for filter
-  const categories = ['all', ...new Set(suppliers.map(supplier => supplier.category))];
+  const categories = ['all', ...new Set(suppliers.map(supplier => supplier.category).filter(Boolean))];
   
   // View supplier details
   const handleViewSupplier = (id: string) => {
@@ -153,7 +162,8 @@ const Suppliers = () => {
   };
   
   // Render star rating
-  const renderRating = (rating: number) => {
+  const renderRating = (rating?: number | null) => { // Made rating optional
+    if (rating === null || rating === undefined) return null;
     const stars = [];
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 !== 0;
@@ -161,25 +171,23 @@ const Suppliers = () => {
     for (let i = 0; i < fullStars; i++) {
       stars.push(<Star key={`full-${i}`} className="h-4 w-4 fill-yellow-400 text-yellow-400" />);
     }
-    
     if (hasHalfStar) {
       stars.push(<StarHalf key="half" className="h-4 w-4 fill-yellow-400 text-yellow-400" />);
     }
-    
     const emptyStars = 5 - stars.length;
     for (let i = 0; i < emptyStars; i++) {
       stars.push(<Star key={`empty-${i}`} className="h-4 w-4 text-gray-300" />);
     }
-    
-    return stars;
+    return <div className="flex space-x-0.5">{stars}</div>;
   };
 
   return (
     <div className="container mx-auto px-4 py-8">
+      {/* Header and Add Button */}
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold">Suppliers</h1>
-          <p className="text-muted-foreground">Manage your supplier relationships and track orders</p>
+          <p className="text-muted-foreground">Manage your supplier relationships</p>
         </div>
         
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
@@ -192,12 +200,12 @@ const Suppliers = () => {
             <DialogHeader>
               <DialogTitle>Add New Supplier</DialogTitle>
               <DialogDescription>
-                Enter the details of the new supplier. You can add contact persons later.
+                Enter the details of the new supplier.
               </DialogDescription>
             </DialogHeader>
             
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pt-4">
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <FormField
                     control={form.control}
@@ -212,7 +220,6 @@ const Suppliers = () => {
                       </FormItem>
                     )}
                   />
-                  
                   <FormField
                     control={form.control}
                     name="category"
@@ -242,7 +249,6 @@ const Suppliers = () => {
                     )}
                   />
                 </div>
-                
                 <FormField
                   control={form.control}
                   name="address"
@@ -256,7 +262,6 @@ const Suppliers = () => {
                     </FormItem>
                   )}
                 />
-                
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <FormField
                     control={form.control}
@@ -271,7 +276,6 @@ const Suppliers = () => {
                       </FormItem>
                     )}
                   />
-                  
                   <FormField
                     control={form.control}
                     name="email"
@@ -279,14 +283,13 @@ const Suppliers = () => {
                       <FormItem>
                         <FormLabel>Email</FormLabel>
                         <FormControl>
-                          <Input placeholder="Email address" {...field} />
+                          <Input placeholder="Email address" type="email" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
                 </div>
-                
                 <FormField
                   control={form.control}
                   name="website"
@@ -300,7 +303,6 @@ const Suppliers = () => {
                     </FormItem>
                   )}
                 />
-                
                 <FormField
                   control={form.control}
                   name="notes"
@@ -310,7 +312,7 @@ const Suppliers = () => {
                       <FormControl>
                         <Textarea 
                           placeholder="Additional notes about this supplier" 
-                          className="min-h-[100px]" 
+                          className="min-h-[80px]" 
                           {...field} 
                         />
                       </FormControl>
@@ -318,10 +320,11 @@ const Suppliers = () => {
                     </FormItem>
                   )}
                 />
-                
                 <DialogFooter>
                   <Button type="button" variant="outline" onClick={() => setIsAddDialogOpen(false)}>Cancel</Button>
-                  <Button type="submit">Add Supplier</Button>
+                  <Button type="submit" disabled={form.formState.isSubmitting}>
+                     {form.formState.isSubmitting ? "Adding..." : "Add Supplier"}
+                  </Button>
                 </DialogFooter>
               </form>
             </Form>
@@ -334,7 +337,7 @@ const Suppliers = () => {
         <div className="relative md:col-span-3">
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search suppliers..."
+            placeholder="Search suppliers by name, email, category..."
             className="pl-10"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -359,49 +362,51 @@ const Suppliers = () => {
         </div>
       </div>
       
+      {/* Supplier List / Loading / Empty State */}
       {isLoading ? (
+        // Skeleton Loader
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[1, 2, 3].map((i) => (
-            <Card key={i} className="animate-pulse">
+            <Card key={i} className="animate-pulse h-[280px]"> 
               <CardHeader className="pb-2">
                 <div className="h-6 bg-muted rounded w-3/4"></div>
               </CardHeader>
               <CardContent>
-                <div className="h-4 bg-muted rounded w-full mb-4"></div>
+                <div className="h-4 bg-muted rounded w-full mb-2"></div>
                 <div className="h-4 bg-muted rounded w-5/6 mb-4"></div>
-                <div className="space-y-3 mt-8">
+                <div className="space-y-3 mt-6">
                   <div className="h-4 bg-muted rounded w-full"></div>
                   <div className="h-4 bg-muted rounded w-full"></div>
+                  <div className="h-4 bg-muted rounded w-1/2"></div>
                 </div>
               </CardContent>
             </Card>
           ))}
         </div>
       ) : filteredSuppliers.length > 0 ? (
+         // Supplier Cards
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredSuppliers.map((supplier) => (
-            <Card key={supplier.id} className="hover:shadow-md transition-shadow">
+            <Card key={supplier.id} className="hover:shadow-md transition-shadow flex flex-col"> 
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
-                  <span>{supplier.name}</span>
-                  <div className="flex space-x-0.5">
-                    {renderRating(supplier.rating)}
-                  </div>
+                  <span className="line-clamp-1">{supplier.name}</span>
+                  {renderRating(supplier.rating)}
                 </CardTitle>
                 <CardDescription>{supplier.category}</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-2">
+              <CardContent className="space-y-2 flex-grow"> 
                 <div className="flex items-start">
-                  <Building className="mr-2 h-4 w-4 mt-0.5 text-muted-foreground" />
-                  <span className="text-sm">{supplier.address}</span>
+                  <Building className="mr-2 h-4 w-4 mt-0.5 text-muted-foreground flex-shrink-0" /> 
+                  <span className="text-sm text-muted-foreground line-clamp-2">{supplier.address}</span> 
                 </div>
                 <div className="flex items-center">
                   <Phone className="mr-2 h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">{supplier.phone}</span>
+                  <span className="text-sm text-muted-foreground">{supplier.phone}</span>
                 </div>
                 <div className="flex items-center">
                   <Mail className="mr-2 h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">{supplier.email}</span>
+                  <span className="text-sm text-muted-foreground">{supplier.email}</span>
                 </div>
                 {supplier.website && (
                   <div className="flex items-center">
@@ -410,16 +415,17 @@ const Suppliers = () => {
                       href={supplier.website.startsWith('http') ? supplier.website : `https://${supplier.website}`} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="text-sm text-blue-600 hover:underline"
+                      className="text-sm text-blue-600 hover:underline truncate" 
                     >
                       {supplier.website}
                     </a>
                   </div>
                 )}
+                {/* Display contact count - contacts need to be fetched or counted */}
                 <div className="flex items-center pt-2">
                   <Users className="mr-2 h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">{supplier.contacts.length} contact{supplier.contacts.length !== 1 ? 's' : ''}</span>
-                </div>
+                  <span className="text-sm">{supplier.contacts?.length || 0} contact{supplier.contacts?.length !== 1 ? 's' : ''}</span>
+                </div> 
               </CardContent>
               <CardFooter>
                 <Button 
@@ -434,7 +440,8 @@ const Suppliers = () => {
           ))}
         </div>
       ) : (
-        <Card className="p-8 text-center">
+         // Empty State
+        <Card className="col-span-1 md:col-span-2 lg:col-span-3 p-8 text-center">
           <div className="flex justify-center mb-4">
             <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center">
               <Building className="h-6 w-6 text-muted-foreground" />
@@ -443,8 +450,8 @@ const Suppliers = () => {
           <CardTitle className="mb-2">No suppliers found</CardTitle>
           <CardDescription>
             {searchTerm || categoryFilter !== 'all' 
-              ? "Try adjusting your search or filters" 
-              : "Add your first supplier to get started"}
+              ? "Try adjusting your search or filters." 
+              : "Add your first supplier to get started."}
           </CardDescription>
           <div className="mt-6">
             <Button onClick={() => setIsAddDialogOpen(true)}>

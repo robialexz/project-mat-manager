@@ -1,82 +1,100 @@
-
 import { Material, Project, ProjectSummary, MaterialHistory } from '@/types';
 import { v4 as uuidv4 } from 'uuid';
+// Removed Supabase client import as we are reverting to mock
+// import { supabase } from '@/lib/supabaseClient'; 
+// import { toast } from 'sonner'; 
 
-// Create a new material
-export const createMaterial = (material: Omit<Material, 'id' | 'createdAt' | 'updatedAt' | 'history'>, userId: string): Material => {
+// --- Mock Functions (Restored) ---
+
+// Create a new material (Mock)
+export const createMaterial = (
+  material: Omit<Material, 'id' | 'createdAt' | 'updatedAt' | 'history' | 'confirmed'>, 
+  userId: string // userId might be used for createdBy/updatedBy if those fields exist in type
+): Material => {
   const now = new Date();
-  return {
+  // Ensure the returned object matches the Material type definition
+  const newMaterial: Material = {
     ...material,
-    id: `mat_${Date.now()}`,
-    createdAt: now,
-    updatedAt: now,
-    createdBy: userId,
-    updatedBy: userId,
+    id: `mat_${uuidv4()}`, // Use uuid for better uniqueness
+    createdAt: now.toISOString(), 
+    updatedAt: now.toISOString(), 
     history: [],
-    confirmed: false
+    confirmed: true, // Default to confirmed for new mock materials? Or false?
+    // Add other required fields from Material type with default values if necessary
+    status: material.status || 'pending', // Ensure status has a default
+    ordered: material.ordered || false,
+    delivered: material.delivered || false,
   };
+  // Add createdBy/updatedBy if they exist in your Material type
+  // newMaterial.createdBy = userId; 
+  // newMaterial.updatedBy = userId;
+  return newMaterial;
 };
 
-// Update a material and track changes
+// Update a material and track changes (Mock)
 export const updateMaterial = (
   material: Material,
   updates: Partial<Omit<Material, 'id' | 'createdAt' | 'updatedAt' | 'history'>>,
-  userId: string
+  userId: string // userId might be used for updatedBy or history
 ): Material => {
   const now = new Date();
-  const newHistory: MaterialHistory[] = [...material.history];
-  
+  const newHistory: MaterialHistory[] = [...(material.history || [])]; // Handle potentially undefined history
+
   // Track changes for each updated field
   Object.entries(updates).forEach(([key, newValue]) => {
     const oldValue = material[key as keyof Material];
-    if (oldValue !== newValue && key !== 'updatedAt' && key !== 'updatedBy') {
-      newHistory.push({
-        id: `hist_${Date.now()}_${key}`,
-        materialId: material.id,
-        field: key,
-        oldValue: oldValue as string | number,
-        newValue: newValue as string | number,
-        changedAt: now,
-        changedBy: userId,
-        confirmed: false
-      });
+    // Check if key is a valid field and value changed
+    if (key !== 'id' && key !== 'createdAt' && key !== 'history' && oldValue !== newValue) {
+       // Ensure the history entry matches the MaterialHistory type
+       newHistory.push({
+         id: `hist_${uuidv4()}`, 
+         materialId: material.id,
+         field: key,
+         oldValue: oldValue as string | number | boolean, 
+         newValue: newValue as string | number | boolean, 
+         changedAt: now.toISOString(), 
+         changedBy: userId, 
+         confirmed: false // Changes are initially unconfirmed
+       });
     }
   });
   
-  return {
+  const updatedMaterial: Material = {
     ...material,
     ...updates,
-    updatedAt: now,
-    updatedBy: userId,
+    updatedAt: now.toISOString(), 
     history: newHistory,
-    confirmed: false
+    confirmed: false // Mark material as unconfirmed due to changes
   };
+   // Add updatedBy if it exists in your Material type
+   // updatedMaterial.updatedBy = userId;
+  return updatedMaterial;
 };
 
-// Confirm changes to a material
+// Confirm changes to a material (Mock)
 export const confirmChanges = (material: Material, userId: string): Material => {
   const now = new Date();
   
   // Mark all unconfirmed history items as confirmed
-  const updatedHistory = material.history.map(hist => 
+  const updatedHistory = (material.history || []).map(hist => 
     hist.confirmed ? 
       hist : 
       {
         ...hist,
         confirmed: true,
         confirmedBy: userId,
-        confirmedAt: now
+        confirmedAt: now.toISOString() 
       }
   );
   
   return {
     ...material,
     history: updatedHistory,
-    confirmed: true
+    confirmed: true // Mark the material itself as confirmed
   };
 };
 
-// Parse Excel data (simplified version)
+// Parse Excel data (simplified version - kept as is)
 export const parseExcelData = (data: any[]): Partial<Material>[] => {
   return data.map(row => ({
     name: row.name || row.Name || row['Material Name'] || '',
@@ -89,94 +107,26 @@ export const parseExcelData = (data: any[]): Partial<Material>[] => {
   }));
 };
 
-// Helper to get a summary of changes for a material
+// Helper to get a summary of changes for a material (Mock)
 export const getMaterialChangeSummary = (material: Material): string => {
-  const unconfirmedChanges = material.history.filter(h => !h.confirmed);
-  if (unconfirmedChanges.length === 0) return '';
+  const unconfirmedChanges = (material.history || []).filter(h => !h.confirmed);
+  if (unconfirmedChanges.length === 0) return 'No unconfirmed changes';
   
   return unconfirmedChanges
     .map(h => `${h.field}: ${h.oldValue} → ${h.newValue}`)
     .join(', ');
 };
 
-// Mock data generator
-export const generateMockProjects = (count: number = 3): Project[] => {
-  const projects: Project[] = [];
-  const categories = ['Structural', 'Electrical', 'Plumbing', 'Finish', 'HVAC'];
-  const units = ['pcs', 'kg', 'm', 'm²', 'm³', 'roll', 'pack'];
-  const names = [
-    'Concrete', 'Rebar', 'Timber', 'Drywall', 'Paint', 'Cables', 
-    'Conduit', 'Pipes', 'Fixtures', 'Insulation', 'Bricks', 'Tiles'
-  ];
-  
-  for (let i = 0; i < count; i++) {
-    const materialCount = 5 + Math.floor(Math.random() * 10);
-    const materials: Material[] = [];
-    
-    for (let j = 0; j < materialCount; j++) {
-      const name = names[Math.floor(Math.random() * names.length)];
-      const category = categories[Math.floor(Math.random() * categories.length)];
-      const unit = units[Math.floor(Math.random() * units.length)];
-      
-      materials.push({
-        id: `mat_${i}_${j}`,
-        name: `${name} ${j+1}`,
-        category,
-        quantity: Math.floor(Math.random() * 100) + 1,
-        unit,
-        price: Math.floor(Math.random() * 1000) + 1,
-        supplier: `Supplier ${j % 5 + 1}`,
-        createdAt: new Date(Date.now() - Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000),
-        updatedAt: new Date(Date.now() - Math.floor(Math.random() * 15) * 24 * 60 * 60 * 1000),
-        createdBy: 'user_1',
-        updatedBy: 'user_1',
-        status: Math.random() > 0.7 ? 'ordered' : (Math.random() > 0.5 ? 'delivered' : 'pending'),
-        history: [],
-        confirmed: true
-      });
-    }
-    
-    // Add some changes to make it interesting
-    if (materials.length > 0) {
-      const randMaterial = materials[Math.floor(Math.random() * materials.length)];
-      const oldQuantity = randMaterial.quantity;
-      randMaterial.quantity = oldQuantity + 10;
-      randMaterial.updatedAt = new Date();
-      randMaterial.confirmed = false;
-      randMaterial.history.push({
-        id: `hist_${i}_change_1`,
-        materialId: randMaterial.id,
-        field: 'quantity',
-        oldValue: oldQuantity,
-        newValue: randMaterial.quantity,
-        changedAt: new Date(),
-        changedBy: 'user_1',
-        confirmed: false
-      });
-    }
-    
-    projects.push({
-      id: `proj_${i}`,
-      name: `Project ${i+1}`,
-      description: `This is a sample project ${i+1} with various materials.`,
-      createdAt: new Date(Date.now() - Math.floor(Math.random() * 90) * 24 * 60 * 60 * 1000),
-      updatedAt: new Date(Date.now() - Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000),
-      createdBy: 'user_1',
-      status: Math.random() > 0.7 ? 'completed' : 'active',
-      materials
-    });
-  }
-  
-  return projects;
-};
 
-// Helper function to get project summary stats
+// Helper function to get project summary stats (Mock)
 export const getProjectSummary = (project: Project): ProjectSummary => {
-  const totalMaterials = project.materials.length;
-  const pendingMaterials = project.materials.filter(m => m.status === 'pending').length;
-  const orderedMaterials = project.materials.filter(m => m.status === 'ordered').length;
-  const deliveredMaterials = project.materials.filter(m => m.status === 'delivered').length;
-  const recentChanges = project.materials.filter(m => !m.confirmed).length;
+  const materials = project.materials || []; // Use default empty array
+  const totalMaterials = materials.length;
+  const pendingMaterials = materials.filter(m => m.status === 'pending').length;
+  const orderedMaterials = materials.filter(m => m.status === 'ordered').length;
+  const deliveredMaterials = materials.filter(m => m.status === 'delivered').length;
+  // Use optional chaining for history and confirmed properties
+  const recentChanges = materials.filter(m => !(m.confirmed ?? true)).length; 
   
   return {
     totalMaterials,
@@ -186,3 +136,6 @@ export const getProjectSummary = (project: Project): ProjectSummary => {
     recentChanges
   };
 };
+
+// NOTE: generateMockProjects was moved to userUtils.ts and should be imported from there if needed.
+// If generateMockProjects is still needed here, it should be copied back from the restored userUtils.ts

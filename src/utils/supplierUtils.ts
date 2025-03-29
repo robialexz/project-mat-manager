@@ -1,8 +1,8 @@
-
 import { v4 as uuidv4 } from 'uuid';
 import { Supplier, ContactPerson, OrderStatus } from '@/types/supplier';
+import { Project, User } from '@/types'; // Import Project and User
 
-// Mock suppliers data
+// --- Mock Data (Restored) ---
 const mockSuppliers: Supplier[] = [
   {
     id: 'sup_1',
@@ -14,20 +14,8 @@ const mockSuppliers: Supplier[] = [
     category: 'General Materials',
     rating: 4.5,
     contacts: [
-      {
-        id: 'cont_1',
-        name: 'John Smith',
-        email: 'john@metrobuilding.com',
-        phone: '(312) 555-7891',
-        role: 'Sales Representative'
-      },
-      {
-        id: 'cont_2',
-        name: 'Sarah Johnson',
-        email: 'sarah@metrobuilding.com',
-        phone: '(312) 555-7892',
-        role: 'Account Manager'
-      }
+      { id: 'cont_1', name: 'John Smith', email: 'john@metrobuilding.com', phone: '(312) 555-7891', role: 'Sales Representative' },
+      { id: 'cont_2', name: 'Sarah Johnson', email: 'sarah@metrobuilding.com', phone: '(312) 555-7892', role: 'Account Manager' }
     ],
     notes: 'Preferred supplier for lumber and general materials',
     createdAt: '2023-01-15T08:00:00Z',
@@ -43,19 +31,13 @@ const mockSuppliers: Supplier[] = [
     category: 'Electrical',
     rating: 4.2,
     contacts: [
-      {
-        id: 'cont_3',
-        name: 'Michael Wong',
-        email: 'michael@electropro.com',
-        phone: '(617) 555-3457',
-        role: 'Technical Specialist'
-      }
+      { id: 'cont_3', name: 'Michael Wong', email: 'michael@electropro.com', phone: '(617) 555-3457', role: 'Technical Specialist' }
     ],
     notes: 'Specialized in high-quality electrical components',
     createdAt: '2023-02-10T09:15:00Z',
     updatedAt: '2023-05-18T11:20:00Z'
   },
-  {
+   {
     id: 'sup_3',
     name: 'PlumbTech Systems',
     address: '789 Waterworks Blvd, Miami, FL 33125',
@@ -65,20 +47,8 @@ const mockSuppliers: Supplier[] = [
     category: 'Plumbing',
     rating: 3.8,
     contacts: [
-      {
-        id: 'cont_4',
-        name: 'Lisa Martinez',
-        email: 'lisa@plumbtech.com',
-        phone: '(305) 555-9013',
-        role: 'Regional Manager'
-      },
-      {
-        id: 'cont_5',
-        name: 'Robert Chen',
-        email: 'robert@plumbtech.com',
-        phone: '(305) 555-9014',
-        role: 'Customer Service'
-      }
+      { id: 'cont_4', name: 'Lisa Martinez', email: 'lisa@plumbtech.com', phone: '(305) 555-9013', role: 'Regional Manager' },
+      { id: 'cont_5', name: 'Robert Chen', email: 'robert@plumbtech.com', phone: '(305) 555-9014', role: 'Customer Service' }
     ],
     notes: 'Good pricing on plumbing fixtures and pipes',
     createdAt: '2023-03-05T10:30:00Z',
@@ -86,63 +56,24 @@ const mockSuppliers: Supplier[] = [
   }
 ];
 
-// Mock order statuses
 const mockOrderStatuses: OrderStatus[] = [
   {
-    id: 'ord_1',
-    supplierId: 'sup_1',
-    projectId: 'project_1',
-    orderNumber: 'ORD-2023-001',
+    id: 'ord_1', supplierId: 'sup_1', projectId: 'proj_0', orderNumber: 'ORD-2023-001',
     items: [
-      {
-        id: 'item_1',
-        name: 'Lumber 2x4',
-        quantity: 100,
-        unit: 'pieces',
-        price: 5.75
-      },
-      {
-        id: 'item_2',
-        name: 'Plywood Sheets',
-        quantity: 50,
-        unit: 'sheets',
-        price: 32.99
-      }
+      { id: 'item_1', name: 'Lumber 2x4', quantity: 100, unit: 'pieces', price: 5.75 },
+      { id: 'item_2', name: 'Plywood Sheets', quantity: 50, unit: 'sheets', price: 32.99 }
     ],
-    status: 'shipped',
-    estimatedDelivery: '2023-07-15T00:00:00Z',
-    notes: 'Part of initial project materials',
-    createdAt: '2023-06-30T08:00:00Z',
-    updatedAt: '2023-07-05T14:30:00Z',
-    lastUpdatedBy: 'John Smith'
+    status: 'shipped', estimatedDelivery: '2023-07-15T00:00:00Z', notes: 'Part of initial project materials',
+    createdAt: '2023-06-30T08:00:00Z', updatedAt: '2023-07-05T14:30:00Z', lastUpdatedBy: 'John Smith'
   },
-  {
-    id: 'ord_2',
-    supplierId: 'sup_2',
-    projectId: 'project_1',
-    orderNumber: 'ORD-2023-002',
+   {
+    id: 'ord_2', supplierId: 'sup_2', projectId: 'proj_1', orderNumber: 'ORD-2023-002',
     items: [
-      {
-        id: 'item_3',
-        name: 'Circuit Breakers',
-        quantity: 10,
-        unit: 'pieces',
-        price: 45.50
-      },
-      {
-        id: 'item_4',
-        name: 'Electrical Wire',
-        quantity: 500,
-        unit: 'feet',
-        price: 0.75
-      }
+      { id: 'item_3', name: 'Circuit Breakers', quantity: 10, unit: 'pieces', price: 45.50 },
+      { id: 'item_4', name: 'Electrical Wire', quantity: 500, unit: 'feet', price: 0.75 }
     ],
-    status: 'confirmed',
-    estimatedDelivery: '2023-07-20T00:00:00Z',
-    notes: 'Electrical components for phase 1',
-    createdAt: '2023-07-01T09:15:00Z',
-    updatedAt: '2023-07-02T11:20:00Z',
-    lastUpdatedBy: 'Michael Wong'
+    status: 'confirmed', estimatedDelivery: '2023-07-20T00:00:00Z', notes: 'Electrical components for phase 1',
+    createdAt: '2023-07-01T09:15:00Z', updatedAt: '2023-07-02T11:20:00Z', lastUpdatedBy: 'Michael Wong'
   }
 ];
 
@@ -152,19 +83,20 @@ if (typeof window !== 'undefined') {
   window.mockOrderStatuses = mockOrderStatuses;
 }
 
-// CRUD operations for suppliers
-export const getAllSuppliers = (): Supplier[] => {
+// --- Mock CRUD operations ---
+
+export const getAllSuppliersMock = (): Supplier[] => {
   if (typeof window !== 'undefined' && window.mockSuppliers) {
     return [...window.mockSuppliers];
   }
   return [];
 };
 
-export const getSupplierById = (id: string): Supplier | undefined => {
-  return getAllSuppliers().find(supplier => supplier.id === id);
+export const getSupplierByIdMock = (id: string): Supplier | undefined => {
+  return getAllSuppliersMock().find(supplier => supplier.id === id);
 };
 
-export const addSupplier = (supplier: Omit<Supplier, 'id' | 'createdAt' | 'updatedAt'>): Supplier => {
+export const addSupplierMock = (supplier: Omit<Supplier, 'id' | 'createdAt' | 'updatedAt'>): Supplier => {
   const newSupplier: Supplier = {
     ...supplier,
     id: `sup_${uuidv4()}`,
@@ -173,14 +105,15 @@ export const addSupplier = (supplier: Omit<Supplier, 'id' | 'createdAt' | 'updat
   };
   
   if (typeof window !== 'undefined') {
-    window.mockSuppliers = [...getAllSuppliers(), newSupplier];
+    if (!window.mockSuppliers) window.mockSuppliers = [];
+    window.mockSuppliers.push(newSupplier);
   }
   
   return newSupplier;
 };
 
-export const updateSupplier = (id: string, updates: Partial<Supplier>): Supplier | undefined => {
-  const suppliers = getAllSuppliers();
+export const updateSupplierMock = (id: string, updates: Partial<Supplier>): Supplier | undefined => {
+  const suppliers = getAllSuppliersMock();
   const index = suppliers.findIndex(supplier => supplier.id === id);
   
   if (index === -1) return undefined;
@@ -200,8 +133,8 @@ export const updateSupplier = (id: string, updates: Partial<Supplier>): Supplier
   return updatedSupplier;
 };
 
-export const deleteSupplier = (id: string): boolean => {
-  const suppliers = getAllSuppliers();
+export const deleteSupplierMock = (id: string): boolean => {
+  const suppliers = getAllSuppliersMock();
   const filtered = suppliers.filter(supplier => supplier.id !== id);
   
   if (filtered.length === suppliers.length) return false;
@@ -213,9 +146,9 @@ export const deleteSupplier = (id: string): boolean => {
   return true;
 };
 
-// Contact person operations
-export const addContactPerson = (supplierId: string, contact: Omit<ContactPerson, 'id'>): Supplier | undefined => {
-  const supplier = getSupplierById(supplierId);
+// Contact person operations (Mock)
+export const addContactPersonMock = (supplierId: string, contact: Omit<ContactPerson, 'id'>): Supplier | undefined => {
+  const supplier = getSupplierByIdMock(supplierId);
   if (!supplier) return undefined;
   
   const newContact: ContactPerson = {
@@ -223,18 +156,21 @@ export const addContactPerson = (supplierId: string, contact: Omit<ContactPerson
     id: `cont_${uuidv4()}`
   };
   
-  return updateSupplier(supplierId, {
+  // Ensure contacts array exists
+  if (!supplier.contacts) supplier.contacts = []; 
+  
+  return updateSupplierMock(supplierId, {
     contacts: [...supplier.contacts, newContact]
   });
 };
 
-export const updateContactPerson = (
+export const updateContactPersonMock = (
   supplierId: string, 
   contactId: string, 
   updates: Partial<ContactPerson>
 ): Supplier | undefined => {
-  const supplier = getSupplierById(supplierId);
-  if (!supplier) return undefined;
+  const supplier = getSupplierByIdMock(supplierId);
+  if (!supplier || !supplier.contacts) return undefined;
   
   const contactIndex = supplier.contacts.findIndex(c => c.id === contactId);
   if (contactIndex === -1) return undefined;
@@ -245,19 +181,19 @@ export const updateContactPerson = (
     ...updates
   };
   
-  return updateSupplier(supplierId, { contacts: updatedContacts });
+  return updateSupplierMock(supplierId, { contacts: updatedContacts });
 };
 
-export const deleteContactPerson = (supplierId: string, contactId: string): Supplier | undefined => {
-  const supplier = getSupplierById(supplierId);
-  if (!supplier) return undefined;
+export const deleteContactPersonMock = (supplierId: string, contactId: string): Supplier | undefined => {
+  const supplier = getSupplierByIdMock(supplierId);
+  if (!supplier || !supplier.contacts) return undefined;
   
-  return updateSupplier(supplierId, {
+  return updateSupplierMock(supplierId, {
     contacts: supplier.contacts.filter(c => c.id !== contactId)
   });
 };
 
-// Order status operations
+// Order status operations (Mock)
 export const getOrderStatuses = (projectId?: string, supplierId?: string): OrderStatus[] => {
   if (typeof window === 'undefined' || !window.mockOrderStatuses) return [];
   
@@ -288,7 +224,8 @@ export const createOrder = (order: Omit<OrderStatus, 'id' | 'createdAt' | 'updat
   };
   
   if (typeof window !== 'undefined') {
-    window.mockOrderStatuses = [...getOrderStatuses(), newOrder];
+    if (!window.mockOrderStatuses) window.mockOrderStatuses = [];
+    window.mockOrderStatuses.push(newOrder);
   }
   
   return newOrder;
@@ -313,3 +250,5 @@ export const updateOrderStatus = (id: string, updates: Partial<OrderStatus>): Or
   
   return updatedOrder;
 };
+
+// Removed duplicate declare global block (should be defined in vite-env.d.ts)

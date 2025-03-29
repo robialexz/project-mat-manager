@@ -14,7 +14,7 @@ import SupplierDetails from "./pages/SupplierDetails";
 import Users from "./pages/Users";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
-import { generateMockProjects } from "./utils/materialUtils";
+import { generateMockProjects } from "./utils/userUtils"; // Corrected path
 import AppLayout from "./components/AppLayout";
 import { v4 as uuidv4 } from "uuid";
 import { User } from "./types";

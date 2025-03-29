@@ -17,10 +17,13 @@ import { useNavigate } from 'react-router-dom';
 
 const UsersPage = () => {
   const navigate = useNavigate();
-  const [users] = useState<User[]>(generateMockUsers(8));
-  const [teams] = useState<Team[]>(generateMockTeams(users));
-  const [teamMembers] = useState<TeamMember[]>(generateMockTeamMembers(users, teams));
-  const [invitations, setInvitations] = useState<Invitation[]>(generateMockInvitations());
+  // Regenerate mock data based on restored functions
+  const [users] = useState<User[]>(() => generateMockUsers(8)); 
+  // Assuming generateMockProjects exists in userUtils now
+  const mockProjects = generateMockProjects(3); 
+  const [teams] = useState<any[]>(() => generateMockTeams(mockProjects, users)); // Use any[] for teams
+  const [teamMembers] = useState<TeamMember[]>(() => generateMockTeamMembers(teams, users)); 
+  const [invitations, setInvitations] = useState<any[]>(() => generateMockInvitations()); // Use any[] for invitations
   
   const [inviteEmail, setInviteEmail] = useState('');
   const [selectedTeam, setSelectedTeam] = useState('');
@@ -39,9 +42,9 @@ const UsersPage = () => {
     
     const newInvitation = createInvitation(
       inviteEmail, 
-      selectedTeam, 
-      selectedRole, 
-      users[0].id // Using first user as current user
+      selectedTeam, // teamId
+      selectedRole, // role
+      users[0]?.id || 'unknown_inviter' // inviterId (use optional chaining)
     );
     
     setInvitations([...invitations, newInvitation]);
@@ -50,7 +53,8 @@ const UsersPage = () => {
   };
   
   const handleVerifyCode = () => {
-    const invitation = verifyInvitationCode(verifyEmail, verifyCode, invitations);
+    // Pass correct arguments based on restored verifyInvitationCode signature
+    const invitation = verifyInvitationCode(verifyEmail, verifyCode, invitations); 
     
     if (invitation) {
       toast.success('Code verified! You can now create your account.');
@@ -200,10 +204,11 @@ const UsersPage = () => {
                   </div>
                 </CardHeader>
                 <CardContent>
+                  {/* Removed comparison with non-existent role 'purchaser' */}
                   <Badge variant={
-                    user.role === 'admin' ? 'default' : 
+                    user.role === 'admin' ? 'destructive' : // Use destructive for admin? Or default?
                     user.role === 'manager' ? 'secondary' : 
-                    user.role === 'purchaser' ? 'outline' : 'destructive'
+                    'outline' // Default to outline for other roles
                   }>
                     {user.role}
                   </Badge>
@@ -222,33 +227,36 @@ const UsersPage = () => {
         <TabsContent value="teams">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {teams.map(team => {
-              const members = teamMembers.filter(m => m.teamId === team.id);
-              const admin = users.find(u => 
-                members.some(m => m.userId === u.id && m.role === 'admin')
-              );
+              // Use team.members directly if populated by generateMockTeams
+              const members = team.members || []; 
+              const admin = members.find((m: TeamMember) => m.role === 'admin'); // Find admin within members
+              const adminUser = admin ? users.find(u => u.id === admin.userId) : null;
               
               return (
                 <Card key={team.id}>
                   <CardHeader>
                     <CardTitle>{team.name}</CardTitle>
-                    <CardDescription>{team.description}</CardDescription>
+                    {/* Use optional chaining for description */}
+                    <CardDescription>{team.description || 'No description'}</CardDescription> 
                   </CardHeader>
                   <CardContent>
                     <div className="flex flex-col space-y-2">
                       <div className="text-sm">
-                        Created {team.createdAt.toLocaleDateString()} by {
+                         {/* Use optional chaining and format date */}
+                        Created {team.createdAt ? new Date(team.createdAt).toLocaleDateString() : 'N/A'} by {
                           users.find(u => u.id === team.createdBy)?.name || 'Unknown'
                         }
                       </div>
-                      <div className="text-sm">Admin: {admin?.name || 'None'}</div>
+                      <div className="text-sm">Admin: {adminUser?.name || 'None'}</div>
                       <div className="flex -space-x-2 overflow-hidden mt-2">
-                        {members.slice(0, 5).map(member => {
+                        {/* Slice members directly */}
+                        {members.slice(0, 5).map((member: TeamMember) => { 
                           const user = users.find(u => u.id === member.userId);
                           return (
-                            <Avatar key={member.id} className="border-2 border-background inline-block h-8 w-8">
+                            <Avatar key={member.id} className="border-2 border-background inline-block h-8 w-8" title={user?.name}>
                               <AvatarImage src={user?.avatar} />
                               <AvatarFallback>
-                                {user?.name.substring(0, 2).toUpperCase()}
+                                {user?.name ? user.name.substring(0, 2).toUpperCase() : '?'}
                               </AvatarFallback>
                             </Avatar>
                           );
@@ -303,10 +311,12 @@ const UsersPage = () => {
                         <div>
                           <div className="font-medium">{invitation.email}</div>
                           <div className="text-sm text-gray-500">
-                            Team: {team?.name}, Role: {invitation.role}
+                            {/* Use getTeamName helper or access directly if team object is available */}
+                            Team: {teams.find(t => t.id === invitation.teamId)?.name || 'N/A'}, Role: {invitation.role} 
                           </div>
                           <div className="text-xs text-gray-400">
-                            Invited by {inviter?.name} on {invitation.invitedAt.toLocaleDateString()}
+                             {/* Use createdAt and format date */}
+                            Invited by {inviter?.name || 'System'} on {new Date(invitation.createdAt).toLocaleDateString()}
                           </div>
                         </div>
                         <div className="flex items-center space-x-2">

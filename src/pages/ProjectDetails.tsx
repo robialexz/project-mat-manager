@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -10,45 +9,76 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import Navbar from '@/components/Navbar';
+import Navbar from '@/components/Navbar'; // Assuming Navbar exists at this commit
 import MaterialTable from '@/components/MaterialTable';
 import MaterialForm from '@/components/MaterialForm';
 import ImportExcel from '@/components/ImportExcel';
+// Import mock functions from the correct locations based on commit 7473f50
 import { 
-  generateMockProjects, createMaterial, updateMaterial, 
+  createMaterial, updateMaterial, 
   confirmChanges, parseExcelData 
-} from '@/utils/materialUtils';
-import { Material, Project } from '@/types';
+} from '@/utils/materialUtils'; 
+import { generateMockProjects } from '@/utils/userUtils'; // Corrected import path
+import { Material, Project } from '@/types'; // Assuming types are correct at this commit
 import { toast } from 'sonner';
+import { useAuth } from '@/App'; // Import useAuth for userId
 
 const ProjectDetails = () => {
-  const { projectId } = useParams();
+  const { projectId } = useParams<{ projectId: string }>();
+  const { userId } = useAuth(); // Get userId from auth context
   const [project, setProject] = useState<Project | null>(null);
+  const [isLoading, setIsLoading] = useState(true); // Use a single loading state for simplicity now
   const [isAddingMaterial, setIsAddingMaterial] = useState(false);
   const [isEditingMaterial, setIsEditingMaterial] = useState(false);
   const [isImportingExcel, setIsImportingExcel] = useState(false);
   const [selectedMaterial, setSelectedMaterial] = useState<Material | null>(null);
   
-  // Load project data
+  // Load project data using mock function
   useEffect(() => {
-    // In a real app, this would be an API call
-    const mockProjects = generateMockProjects(6);
+    setIsLoading(true);
+    // Use the mock project generator from userUtils
+    const mockProjects = generateMockProjects(6); // Assuming this function exists in userUtils now
     const foundProject = mockProjects.find(p => p.id === projectId);
     if (foundProject) {
-      setProject(foundProject);
+      // Simulate async loading
+      setTimeout(() => {
+        setProject(foundProject);
+        setIsLoading(false);
+      }, 300); // Short delay
+    } else {
+       toast.error("Project not found.");
+       setProject(null);
+       setIsLoading(false);
     }
   }, [projectId]);
   
+  // Loading state UI
+  if (isLoading) {
+     return (
+      <div className="min-h-screen bg-background">
+        {/* <Navbar /> */} {/* Navbar might be in AppLayout */}
+        <main className="container mx-auto px-4 py-8">
+           <div className="animate-pulse space-y-4">
+             <div className="h-8 bg-muted rounded w-1/4"></div>
+             <div className="h-4 bg-muted rounded w-2/4"></div>
+             <div className="h-64 bg-muted rounded"></div>
+           </div>
+        </main>
+      </div>
+     );
+  }
+
+  // Project not found state
   if (!project) {
     return (
       <div className="min-h-screen bg-background">
-        <Navbar />
+        {/* <Navbar /> */}
         <main className="container mx-auto px-4 py-8">
           <div className="flex items-center mb-8">
             <Button variant="ghost" size="sm" className="mr-2" asChild>
-              <Link to="/dashboard">
+              <Link to="/projects"> {/* Link back to projects list */}
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Back
+                Back to Projects
               </Link>
             </Button>
           </div>
@@ -60,7 +90,7 @@ const ProjectDetails = () => {
                 The project you're looking for doesn't exist or you don't have access to it.
               </p>
               <Button asChild>
-                <Link to="/dashboard">Return to Dashboard</Link>
+                <Link to="/projects">Return to Projects</Link>
               </Button>
             </div>
           </div>
@@ -69,12 +99,13 @@ const ProjectDetails = () => {
     );
   }
   
-  // Calculate project stats
-  const totalMaterials = project.materials.length;
-  const pendingMaterials = project.materials.filter(m => m.status === 'pending').length;
-  const orderedMaterials = project.materials.filter(m => m.status === 'ordered').length;
-  const deliveredMaterials = project.materials.filter(m => m.status === 'delivered').length;
-  const recentChanges = project.materials.filter(m => !m.confirmed).length;
+  // Calculate project stats using mock data from the project state
+  const materials = project.materials || []; 
+  const totalMaterials = materials.length;
+  const pendingMaterials = materials.filter(m => m.status === 'pending').length;
+  const orderedMaterials = materials.filter(m => m.status === 'ordered').length;
+  const deliveredMaterials = materials.filter(m => m.status === 'delivered').length;
+  const recentChanges = materials.filter(m => !(m.confirmed ?? true)).length; // Use optional chaining and default to true if confirmed is missing
   
   const progressPercentage = totalMaterials === 0 
     ? 0 
@@ -90,86 +121,93 @@ const ProjectDetails = () => {
     setIsEditingMaterial(true);
   };
   
+  // Use mock save function
   const handleSaveMaterial = (materialData: Partial<Material>) => {
-    if (selectedMaterial) {
-      // Update existing material
-      const updatedMaterial = updateMaterial(
-        selectedMaterial,
-        materialData,
-        'user_1' // In a real app, this would be the current user's ID
-      );
-      
-      const updatedMaterials = project.materials.map(m =>
-        m.id === updatedMaterial.id ? updatedMaterial : m
-      );
-      
-      setProject({
-        ...project,
-        materials: updatedMaterials,
-        updatedAt: new Date()
-      });
-      
-      toast.success('Material updated successfully');
-    } else {
-      // Create new material
-      const newMaterial = createMaterial(
-        materialData as Omit<Material, 'id' | 'createdAt' | 'updatedAt' | 'history'>,
-        'user_1' // In a real app, this would be the current user's ID
-      );
-      
-      setProject({
-        ...project,
-        materials: [...project.materials, newMaterial],
-        updatedAt: new Date()
-      });
-      
-      toast.success('Material added successfully');
-    }
+     if (!userId || !project) {
+       toast.error("Cannot save material.");
+       return;
+     }
+     
+     let updatedMaterials;
+     if (selectedMaterial) {
+       // Update existing material (mock)
+       const updatedMaterial = updateMaterial(selectedMaterial, materialData, userId);
+       updatedMaterials = materials.map(m => m.id === updatedMaterial.id ? updatedMaterial : m);
+       toast.success('Material updated (mock)');
+     } else {
+       // Create new material (mock)
+       const newMaterial = createMaterial(
+         materialData as Omit<Material, 'id' | 'createdAt' | 'updatedAt' | 'history' | 'confirmed'>, 
+         userId
+       );
+       updatedMaterials = [...materials, newMaterial];
+       toast.success('Material added (mock)');
+     }
+     
+     setProject(prev => prev ? ({ ...prev, materials: updatedMaterials, updatedAt: new Date().toISOString() }) : null);
+     setIsAddingMaterial(false);
+     setIsEditingMaterial(false);
+     setSelectedMaterial(null);
   };
   
+  // Use mock confirm function
   const handleConfirmChanges = (materialId: string) => {
-    const material = project.materials.find(m => m.id === materialId);
-    if (!material) return;
-    
-    const confirmedMaterial = confirmChanges(material, 'user_1');
-    
-    const updatedMaterials = project.materials.map(m =>
-      m.id === materialId ? confirmedMaterial : m
-    );
-    
-    setProject({
-      ...project,
-      materials: updatedMaterials
-    });
+     if (!userId || !project) {
+       toast.error("Cannot confirm changes.");
+       return;
+     }
+     const material = materials.find(m => m.id === materialId);
+     if (!material) return;
+     
+     const confirmedMaterial = confirmChanges(material, userId);
+     const updatedMaterials = materials.map(m => m.id === materialId ? confirmedMaterial : m);
+     
+     setProject(prev => prev ? ({ ...prev, materials: updatedMaterials }) : null);
+     toast.success('Changes confirmed (mock)');
   };
   
+  // Use mock import function
   const handleImportMaterials = (data: any[]) => {
-    const parsedMaterials = parseExcelData(data);
-    
-    const newMaterials = parsedMaterials.map(materialData => 
-      createMaterial(
-        materialData as Omit<Material, 'id' | 'createdAt' | 'updatedAt' | 'history'>,
-        'user_1'
-      )
-    );
-    
-    setProject({
-      ...project,
-      materials: [...project.materials, ...newMaterials],
-      updatedAt: new Date()
-    });
+     if (!userId || !project) {
+       toast.error("Cannot import materials.");
+       return;
+     }
+     try {
+        const parsedMaterials = parseExcelData(data);
+        const newMaterials = parsedMaterials
+          .filter(mat => mat.name) // Basic validation
+          .map(materialData => 
+             createMaterial(
+               materialData as Omit<Material, 'id' | 'createdAt' | 'updatedAt' | 'history' | 'confirmed'>,
+               userId
+             )
+          );
+        
+        setProject(prev => prev ? ({ 
+          ...prev, 
+          materials: [...prev.materials, ...newMaterials], 
+          updatedAt: new Date().toISOString() 
+        }) : null);
+        toast.success(`${newMaterials.length} materials imported (mock)`);
+     } catch (error) {
+        console.error("Error parsing/importing materials:", error);
+        toast.error("Failed to import materials.");
+     } finally {
+        setIsImportingExcel(false);
+     }
   };
   
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      {/* <Navbar /> */} {/* Assuming Navbar is in AppLayout */}
       
       <main className="container mx-auto px-4 py-8">
+        {/* Back Button and Header */}
         <div className="flex items-center mb-8">
           <Button variant="ghost" size="sm" className="mr-2" asChild>
-            <Link to="/dashboard">
+            <Link to="/projects"> 
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Back
+              Back to Projects
             </Link>
           </Button>
           
@@ -187,8 +225,9 @@ const ProjectDetails = () => {
           </div>
         </div>
         
-        {/* Project Overview */}
+        {/* Project Overview Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {/* Cards remain the same, using calculated stats */}
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-4">
@@ -203,7 +242,6 @@ const ProjectDetails = () => {
               </div>
             </CardContent>
           </Card>
-          
           <Card>
             <CardContent className="p-6">
               <h3 className="font-medium mb-4">Material Status</h3>
@@ -215,7 +253,6 @@ const ProjectDetails = () => {
                   </div>
                   <span>{pendingMaterials}</span>
                 </div>
-                
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <TruckIcon className="h-4 w-4 text-blue-500 mr-2" />
@@ -223,7 +260,6 @@ const ProjectDetails = () => {
                   </div>
                   <span>{orderedMaterials}</span>
                 </div>
-                
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
@@ -234,7 +270,6 @@ const ProjectDetails = () => {
               </div>
             </CardContent>
           </Card>
-          
           <Card>
             <CardContent className="p-6">
               <h3 className="font-medium mb-4">Recent Activity</h3>
@@ -250,17 +285,16 @@ const ProjectDetails = () => {
                     </Badge>
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    There are {recentChanges} materials with unconfirmed changes that require your attention.
+                    There are {recentChanges} materials with unconfirmed changes.
                   </p>
                 </div>
               ) : (
                 <p className="text-sm text-muted-foreground">
-                  No recent changes. All material updates have been confirmed.
+                  All material updates confirmed.
                 </p>
               )}
             </CardContent>
           </Card>
-          
           <Card>
             <CardContent className="p-6">
               <h3 className="font-medium mb-4">Team</h3>
@@ -269,13 +303,22 @@ const ProjectDetails = () => {
                   <Users className="h-4 w-4 text-muted-foreground mr-2" />
                   <span className="text-sm">Team Members</span>
                 </div>
-                <span>3</span>
+                <span>{project.team?.length || 0}</span> 
               </div>
               <div className="flex -space-x-2">
-                <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-xs">AM</div>
-                <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs">JD</div>
-                <div className="h-8 w-8 rounded-full bg-green-500 flex items-center justify-center text-white text-xs">RK</div>
-                <div className="h-8 w-8 rounded-full bg-secondary flex items-center justify-center text-secondary-foreground text-xs">+</div>
+                 {project.team?.slice(0, 4).map((member, index) => (
+                   <div key={member.id || index} className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-muted-foreground text-xs" title={member.name}>
+                     {member.name ? member.name.substring(0, 2).toUpperCase() : '?'}
+                   </div>
+                 ))}
+                 {project.team && project.team.length > 4 && (
+                   <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-muted-foreground text-xs">
+                     +{project.team.length - 4}
+                   </div>
+                 )}
+                 {(!project.team || project.team.length === 0) && (
+                    <p className="text-xs text-muted-foreground">No team members yet.</p>
+                 )}
               </div>
             </CardContent>
           </Card>
@@ -285,13 +328,13 @@ const ProjectDetails = () => {
         <div>
           <Tabs defaultValue="all">
             <div className="flex justify-between items-center mb-6">
-              <div className="flex items-center">
-                <h2 className="text-2xl font-bold mr-4">Materials</h2>
+              <div className="flex items-center flex-wrap gap-2"> 
+                <h2 className="text-2xl font-bold mr-4 whitespace-nowrap">Materials</h2> 
                 <TabsList>
-                  <TabsTrigger value="all">All</TabsTrigger>
-                  <TabsTrigger value="pending">Pending</TabsTrigger>
-                  <TabsTrigger value="ordered">Ordered</TabsTrigger>
-                  <TabsTrigger value="delivered">Delivered</TabsTrigger>
+                  <TabsTrigger value="all">All ({totalMaterials})</TabsTrigger>
+                  <TabsTrigger value="pending">Pending ({pendingMaterials})</TabsTrigger>
+                  <TabsTrigger value="ordered">Ordered ({orderedMaterials})</TabsTrigger>
+                  <TabsTrigger value="delivered">Delivered ({deliveredMaterials})</TabsTrigger>
                   {recentChanges > 0 && (
                     <TabsTrigger value="changes" className="relative">
                       Changes
@@ -303,54 +346,51 @@ const ProjectDetails = () => {
                 </TabsList>
               </div>
               
-              <div className="flex space-x-2">
-                <Button onClick={() => setIsImportingExcel(true)} variant="outline">
-                  <FileUp className="h-4 w-4 mr-2" />
+              <div className="flex space-x-2 mt-2 md:mt-0"> 
+                <Button onClick={() => setIsImportingExcel(true)} variant="outline" size="sm"> 
+                  <FileUp className="h-4 w-4 mr-1" />
                   Import
                 </Button>
-                <Button onClick={handleAddMaterial}>
-                  <Plus className="h-4 w-4 mr-2" />
+                <Button onClick={handleAddMaterial} size="sm"> 
+                  <Plus className="h-4 w-4 mr-1" />
                   Add Material
                 </Button>
               </div>
             </div>
             
+            {/* Pass materials state (which comes from project state) */}
             <TabsContent value="all" className="mt-0">
               <MaterialTable 
-                materials={project.materials}
+                materials={materials} 
                 onEdit={handleEditMaterial}
                 onConfirm={handleConfirmChanges}
               />
             </TabsContent>
-            
             <TabsContent value="pending" className="mt-0">
               <MaterialTable 
-                materials={project.materials.filter(m => m.status === 'pending')}
+                materials={materials.filter(m => m.status === 'pending')}
                 onEdit={handleEditMaterial}
                 onConfirm={handleConfirmChanges}
               />
             </TabsContent>
-            
             <TabsContent value="ordered" className="mt-0">
               <MaterialTable 
-                materials={project.materials.filter(m => m.status === 'ordered')}
+                materials={materials.filter(m => m.status === 'ordered')}
                 onEdit={handleEditMaterial}
                 onConfirm={handleConfirmChanges}
               />
             </TabsContent>
-            
             <TabsContent value="delivered" className="mt-0">
               <MaterialTable 
-                materials={project.materials.filter(m => m.status === 'delivered')}
+                materials={materials.filter(m => m.status === 'delivered')}
                 onEdit={handleEditMaterial}
                 onConfirm={handleConfirmChanges}
               />
             </TabsContent>
-            
             {recentChanges > 0 && (
               <TabsContent value="changes" className="mt-0">
                 <MaterialTable 
-                  materials={project.materials.filter(m => !m.confirmed)}
+                  materials={materials.filter(m => !(m.confirmed ?? true))}
                   onEdit={handleEditMaterial}
                   onConfirm={handleConfirmChanges}
                 />

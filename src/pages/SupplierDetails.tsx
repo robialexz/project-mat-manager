@@ -1,15 +1,14 @@
-
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+// Use mock functions
 import { 
-  getSupplierById, 
-  updateSupplier, 
-  addContactPerson,
-  updateContactPerson,
-  deleteContactPerson,
-  getOrderStatuses,
-  updateOrderStatus
-} from '@/utils/supplierUtils';
+  getSupplierByIdMock as getSupplierById, 
+  addContactPersonMock as addContactPerson,
+  updateContactPersonMock as updateContactPerson,
+  deleteContactPersonMock as deleteContactPerson,
+  getOrderStatuses, // Keep using mock order functions
+  updateOrderStatus 
+} from '@/utils/supplierUtils'; 
 import { Supplier, ContactPerson, OrderStatus } from '@/types/supplier';
 import { 
   Card, 
@@ -99,6 +98,7 @@ import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import { Link } from 'react-router-dom'; // Import Link
 
 // Form schema for contact person
 const contactPersonSchema = z.object({
@@ -146,12 +146,17 @@ const SupplierDetails = () => {
   });
 
   useEffect(() => {
-    const loadSupplier = async () => {
+    // Use mock function for loading
+    const loadSupplier = () => { 
       try {
         setIsLoading(true);
-        if (!id) return;
+        if (!id) {
+           toast.error('Supplier ID is missing.');
+           navigate('/suppliers'); 
+           return;
+        };
         
-        const supplierData = getSupplierById(id);
+        const supplierData = getSupplierById(id); // Use mock function
         if (!supplierData) {
           toast.error('Supplier not found');
           navigate('/suppliers');
@@ -160,8 +165,8 @@ const SupplierDetails = () => {
         
         setSupplier(supplierData);
         
-        // Load orders for this supplier
-        const orderData = getOrderStatuses(undefined, id);
+        // Load orders for this supplier (still using mock)
+        const orderData = getOrderStatuses(undefined, id); 
         setOrders(orderData);
       } catch (error) {
         console.error('Error loading supplier:', error);
@@ -207,46 +212,59 @@ const SupplierDetails = () => {
     }
   }, [activeOrderId, orders, orderStatusForm]);
 
+  // Use mock functions for contact submit
   const handleContactSubmit = (data: z.infer<typeof contactPersonSchema>) => {
     try {
       if (!supplier) return;
       
-      let updatedSupplier: Supplier | undefined;
-      
-      if (editingContact) {
-        // Update existing contact
-        updatedSupplier = updateContactPerson(supplier.id, editingContact.id, data);
+          let updatedSupplier: Supplier | undefined;
+          
+          // Construct the contact data ensuring all required fields are present
+          // Use null for optional fields if needed by the type, though Omit should handle it
+          const contactData: Omit<ContactPerson, 'id'> = {
+              name: data.name, 
+              email: data.email,
+              phone: data.phone,
+              role: data.role,
+              avatarUrl: null // Explicitly set optional avatarUrl to null if not provided
+          };
+
+          if (editingContact) {
+        // Update existing contact (mock)
+        updatedSupplier = updateContactPerson(supplier.id, editingContact.id, contactData);
         if (updatedSupplier) {
-          toast.success('Contact updated successfully');
+          toast.success('Contact updated successfully (mock)');
         }
       } else {
-        // Add new contact
-        updatedSupplier = addContactPerson(supplier.id, data);
+        // Add new contact (mock)
+        updatedSupplier = addContactPerson(supplier.id, contactData);
         if (updatedSupplier) {
-          toast.success('Contact added successfully');
+          toast.success('Contact added successfully (mock)');
         }
       }
       
       if (updatedSupplier) {
-        setSupplier(updatedSupplier);
+        setSupplier(updatedSupplier); // Update state with result from mock function
       }
       
       setIsContactDialogOpen(false);
       setEditingContact(null);
+      contactForm.reset(); 
     } catch (error) {
       console.error('Error saving contact:', error);
       toast.error('Failed to save contact');
     }
   };
   
+  // Use mock function for delete contact
   const handleDeleteContact = (contactId: string) => {
     try {
       if (!supplier) return;
       
-      const updatedSupplier = deleteContactPerson(supplier.id, contactId);
+      const updatedSupplier = deleteContactPerson(supplier.id, contactId); 
       if (updatedSupplier) {
         setSupplier(updatedSupplier);
-        toast.success('Contact deleted successfully');
+        toast.success('Contact deleted successfully (mock)');
       }
     } catch (error) {
       console.error('Error deleting contact:', error);
@@ -259,13 +277,14 @@ const SupplierDetails = () => {
     setIsContactDialogOpen(true);
   };
   
+  // Keep using mock for order status for now
   const handleOrderStatusUpdate = (data: z.infer<typeof orderStatusSchema>) => {
     try {
       if (!activeOrderId || !supplier) return;
       
       const updatedOrder = updateOrderStatus(activeOrderId, {
         ...data,
-        lastUpdatedBy: supplier.name,
+        lastUpdatedBy: supplier.name, // Keep using name for mock
       });
       
       if (updatedOrder) {
@@ -273,7 +292,7 @@ const SupplierDetails = () => {
         toast.success('Order status updated successfully');
       }
       
-      setIsOrderStatusDialogOpen(false);
+      setIsContactDialogOpen(false);
       setActiveOrderId(null);
     } catch (error) {
       console.error('Error updating order status:', error);
@@ -282,7 +301,8 @@ const SupplierDetails = () => {
   };
   
   // Render star rating
-  const renderRating = (rating: number) => {
+  const renderRating = (rating?: number | null) => { // Made rating optional
+    if (rating === null || rating === undefined) return null;
     const stars = [];
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 !== 0;
@@ -290,17 +310,14 @@ const SupplierDetails = () => {
     for (let i = 0; i < fullStars; i++) {
       stars.push(<Star key={`full-${i}`} className="h-4 w-4 fill-yellow-400 text-yellow-400" />);
     }
-    
     if (hasHalfStar) {
       stars.push(<StarHalf key="half" className="h-4 w-4 fill-yellow-400 text-yellow-400" />);
     }
-    
     const emptyStars = 5 - stars.length;
     for (let i = 0; i < emptyStars; i++) {
       stars.push(<Star key={`empty-${i}`} className="h-4 w-4 text-gray-300" />);
     }
-    
-    return stars;
+    return <div className="flex space-x-0.5">{stars}</div>;
   };
   
   // Get status icon
@@ -330,12 +347,18 @@ const SupplierDetails = () => {
   // Format date
   const formatDate = (dateString?: string) => {
     if (!dateString) return 'N/A';
-    return new Date(dateString).toLocaleDateString();
+    // Ensure dateString is valid before creating Date object
+    try {
+       return new Date(dateString).toLocaleDateString();
+    } catch (e) {
+       return 'Invalid Date';
+    }
   };
   
   // Calculate order total
   const calculateOrderTotal = (order: OrderStatus) => {
-    return order.items.reduce((total, item) => total + (item.price * item.quantity), 0);
+    // Use optional chaining for items array
+    return (order.items || []).reduce((total, item) => total + (item.price * item.quantity), 0);
   };
   
   if (isLoading) {
@@ -389,7 +412,8 @@ const SupplierDetails = () => {
                     </div>
                   </CardDescription>
                 </div>
-                <Button variant="outline" size="icon">
+                {/* TODO: Add edit supplier functionality */}
+                <Button variant="outline" size="icon" onClick={() => toast.info("Edit supplier coming soon")}>
                   <Edit className="h-4 w-4" />
                 </Button>
               </div>
@@ -580,6 +604,8 @@ const SupplierDetails = () => {
                         >
                           <div className="flex items-center">
                             <Avatar>
+                              {/* Assuming avatarUrl might be optional */}
+                              <AvatarImage src={contact.avatarUrl || undefined} alt={contact.name} /> 
                               <AvatarFallback>
                                 {contact.name.substring(0, 2).toUpperCase()}
                               </AvatarFallback>
@@ -684,9 +710,10 @@ const SupplierDetails = () => {
                                 </div>
                               </TableCell>
                               <TableCell>
-                                Project {order.projectId.split('_')[1]}
+                                {/* Assuming projectId format is like 'project_1' */}
+                                Project {order.projectId?.split('_')[1] || 'N/A'} 
                               </TableCell>
-                              <TableCell>{order.items.length} items</TableCell>
+                              <TableCell>{order.items?.length || 0} items</TableCell>
                               <TableCell>{formatCurrency(calculateOrderTotal(order))}</TableCell>
                               <TableCell>{formatDate(order.estimatedDelivery)}</TableCell>
                               <TableCell>
