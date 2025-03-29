@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -18,56 +17,37 @@ import SettingsPage from "./pages/Settings";
 import ImportMaterialsPage from "./pages/ImportMaterials"; 
 import MaterialHistoryPage from "./pages/MaterialHistory"; 
 import CalendarPage from "./pages/Calendar"; 
-import MessagesPage from "./pages/Messages"; // Import MessagesPage
-import { generateMockProjects } from "./utils/userUtils"; 
+import MessagesPage from "./pages/Messages"; 
+import { generateMockProjects, generateMockUsers, createUserMock } from "./utils/userUtils"; // Use correct mock functions
 import AppLayout from "./components/AppLayout";
 import { v4 as uuidv4 } from "uuid";
 import { User } from "./types";
+import { toast } from "sonner"; // Added toast import
 
 const queryClient = new QueryClient();
 
 // Initialize mock data in the window object for global access
-if (typeof window !== 'undefined') {
-  // Initialize mock projects
+// Ensure this runs only once
+if (typeof window !== 'undefined' && !window.mockProjects) {
   window.mockProjects = generateMockProjects(6);
+  window.mockUsers = generateMockUsers(8); // Generate users after projects if needed
   
-  // Initialize mock users
-  const mockUsers: User[] = [
-    {
-      id: "user_1",
-      email: "john@example.com",
-      name: "John Doe",
-      role: "admin",
-      projects: window.mockProjects.map(p => p.id),
-      createdAt: "2023-01-15T08:00:00Z"
-    },
-    {
-      id: "user_2",
-      email: "sarah@example.com",
-      name: "Sarah Johnson",
-      role: "manager",
-      projects: [window.mockProjects[0].id, window.mockProjects[1].id],
-      createdAt: "2023-02-10T09:15:00Z"
-    },
-    {
-      id: "user_3",
-      email: "mike@example.com",
-      name: "Mike Wilson",
-      role: "member",
-      projects: [window.mockProjects[0].id],
-      createdAt: "2023-03-05T10:30:00Z"
-    },
-    {
-      id: "user_4",
-      email: "client@example.com",
-      name: "Client User",
-      role: "client",
-      projects: [window.mockProjects[0].id, window.mockProjects[2].id],
-      createdAt: "2023-04-01T11:45:00Z"
-    }
-  ];
-  
-  window.mockUsers = mockUsers;
+  // Assign projects to mock users (example logic)
+  window.mockUsers.forEach((user, index) => {
+     if (user.role === 'admin') {
+        user.projects = window.mockProjects?.map(p => p.id) || [];
+     } else if (user.role === 'manager') {
+         user.projects = window.mockProjects?.slice(index % 3, (index % 3) + 2).map(p => p.id) || [];
+     } else {
+         user.projects = window.mockProjects ? [window.mockProjects[index % window.mockProjects.length].id] : [];
+     }
+  });
+
+  // Initialize other mock data if needed by utils
+  // window.mockSuppliers = ...
+  // window.mockInvitations = ...
+  // window.mockTeams = ...
+  // window.mockOrderStatuses = ...
 }
 
 // Create authentication context
@@ -75,25 +55,22 @@ interface AuthContextType {
   isAuthenticated: boolean;
   userEmail: string | null;
   userId: string | null;
-  userRole: string | null;
+  userRole: User['role'] | null; // Use specific role type
   checkAuth: () => boolean;
-  login: (email: string) => void;
+  login: (email: string) => boolean; // Return true on success, false on fail
   logout: () => void;
-  register: (email: string, name: string) => void;
+  register: (email: string, name: string) => boolean; // Return true on success
 }
 
-const AuthContext = createContext<AuthContextType>({
-  isAuthenticated: false,
-  userEmail: null,
-  userId: null,
-  userRole: null,
-  checkAuth: () => false,
-  login: () => {},
-  logout: () => {},
-  register: () => {},
-});
+const AuthContext = createContext<AuthContextType | undefined>(undefined); // Initialize with undefined
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
 
 // Protected route component
 interface ProtectedRouteProps {
@@ -105,7 +82,6 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const location = useLocation();
   
   if (!checkAuth()) {
-    // Redirect to login page but save the current location
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
   
@@ -117,14 +93,14 @@ const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
-  const [userRole, setUserRole] = useState<string | null>(null);
+  const [userRole, setUserRole] = useState<User['role'] | null>(null);
   
   // Check if user is authenticated on initial load
   useEffect(() => {
     const auth = localStorage.getItem('isAuthenticated') === 'true';
     const email = localStorage.getItem('userEmail');
     const id = localStorage.getItem('userId');
-    const role = localStorage.getItem('userRole');
+    const role = localStorage.getItem('userRole') as User['role'] | null; // Cast role
     
     setIsAuthenticated(auth);
     setUserEmail(email);
@@ -137,52 +113,48 @@ const App = () => {
     return localStorage.getItem('isAuthenticated') === 'true';
   };
   
-  const login = (email: string) => {
-    // Find user by email
-    const user = window.mockUsers?.find(u => u.email === email);
+  const login = (email: string): boolean => {
+    const user = window.mockUsers?.find(u => u.email.toLowerCase() === email.toLowerCase());
     
     if (user) {
       localStorage.setItem('isAuthenticated', 'true');
-      localStorage.setItem('userEmail', email);
+      localStorage.setItem('userEmail', user.email);
       localStorage.setItem('userId', user.id);
       localStorage.setItem('userRole', user.role);
       
       setIsAuthenticated(true);
-      setUserEmail(email);
+      setUserEmail(user.email);
       setUserId(user.id);
       setUserRole(user.role);
+      return true; // Login successful
     } else {
-      // If user doesn't exist, create a new one
-      register(email, email.split('@')[0]);
+      // User not found during login attempt
+      toast.error("Email not found. Please register first.");
+      return false; // Login failed
     }
   };
   
-  const register = (email: string, name: string) => {
-    // Create a new user if it doesn't exist
-    const newUser: User = {
-      id: `user_${uuidv4()}`,
-      email,
-      name,
-      role: 'member', // Default role
-      projects: [],
-      createdAt: new Date().toISOString()
-    };
+  const register = (email: string, name: string): boolean => {
+     // Check if user already exists
+     if (window.mockUsers?.some(u => u.email.toLowerCase() === email.toLowerCase())) {
+        toast.error("Email already registered. Please log in.");
+        return false; // Registration failed
+     }
+
+    // Use the mock function to create user
+    const newUser = createUserMock(email, name, 'member'); // Default role 'member'
     
-    if (window.mockUsers) {
-      window.mockUsers.push(newUser);
-    } else {
-      window.mockUsers = [newUser];
-    }
-    
+    // Login the new user immediately
     localStorage.setItem('isAuthenticated', 'true');
-    localStorage.setItem('userEmail', email);
+    localStorage.setItem('userEmail', newUser.email);
     localStorage.setItem('userId', newUser.id);
     localStorage.setItem('userRole', newUser.role);
     
     setIsAuthenticated(true);
-    setUserEmail(email);
+    setUserEmail(newUser.email);
     setUserId(newUser.id);
     setUserRole(newUser.role);
+    return true; // Registration successful
   };
   
   const logout = () => {
@@ -195,6 +167,8 @@ const App = () => {
     setUserEmail(null);
     setUserId(null);
     setUserRole(null);
+    // Optionally navigate to home or login after logout
+    // navigate('/'); 
   };
   
   const authContextValue: AuthContextType = {
@@ -219,7 +193,7 @@ const App = () => {
               <Route path="/" element={<Index />} />
               <Route path="/login" element={<Login />} />
               
-              {/* Protected routes with shared layout */}
+              {/* Protected routes */}
               <Route element={
                 <ProtectedRoute>
                   <AppLayout />
@@ -235,10 +209,10 @@ const App = () => {
                 <Route path="/import-materials" element={<ImportMaterialsPage />} /> 
                 <Route path="/material-history" element={<MaterialHistoryPage />} /> 
                 <Route path="/calendar" element={<CalendarPage />} /> 
-                {/* Update route for MessagesPage */}
                 <Route path="/messages" element={<MessagesPage />} /> 
               </Route>
               
+              {/* Fallback route */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
