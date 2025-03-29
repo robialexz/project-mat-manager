@@ -84,6 +84,28 @@
           "support": "Supporto",
           "pricing": "Prezzi",
           "terms": "Termini di Servizio",
-          "privacy": "Informativa sulla Privacy"
+          "privacy": "Informativa sulla Privacy",
+          "features": "Funzionalità" 
+       },
+       "navbar": { 
+         "title": "Gestore Materiali",
+         "dashboard": "Dashboard",
+         "projects": "Progetti",
+         "suppliers": "Fornitori",
+         "users": "Utenti",
+         "login": "Accedi",
+         "logout": "Esci",
+         "language": "Lingua",
+         "settings": "Impostazioni",
+         "import": "Importa",
+         "history": "Storico",
+         "resources": "Risorse",
+         "aboutUs": "Chi Siamo",
+         "register": "Registrati",
+         "learnMore": "Scopri di Più",
+         "requestDemo": "Richiedi Demo",
+         "features": "Funzionalità", 
+         "support": "Supporto", 
+         "pricing": "Prezzi" 
        }
     }

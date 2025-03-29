@@ -1,6 +1,6 @@
 import { Link, NavLink } from 'react-router-dom';
-// Added BookOpen, Info, UserPlus icons
-import { Boxes, LayoutDashboard, Building, Users, LogIn, LogOut, Languages, Upload, History, Settings, BookOpen, Info, UserPlus } from 'lucide-react'; 
+// Added/updated icons: ListChecks, DollarSign, LifeBuoy
+import { Boxes, LayoutDashboard, Building, Users, LogIn, LogOut, Languages, Upload, History, Settings, BookOpen, Info, UserPlus, ListChecks, DollarSign, LifeBuoy } from 'lucide-react'; 
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/App';
 import { useTranslation } from 'react-i18next'; 
@@ -41,19 +41,20 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo and Title */}
           <Link to="/" className="flex items-center space-x-2 text-lg font-semibold">
-            <Boxes className="h-6 w-6 text-primary" />
-            <span>{t('navbar.title')}</span> 
+            {/* Stylized Text Logo */}
+            <span className="font-bold text-xl bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">Bx</span> 
+            <span className="hidden sm:inline">{t('navbar.title')}</span> 
           </Link>
 
           {/* Navigation Links (Desktop) */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-1"> {/* Reduced space */}
             {isAuthenticated ? (
-              // Authenticated Links
+              // Authenticated Links 
               <>
                 <NavLink 
                   to="/dashboard" 
                   className={({ isActive }) => 
-                    `flex items-center px-3 py-2 rounded-md text-sm font-medium ${
+                    `flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                       isActive ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
                     }`
                   }
@@ -61,10 +62,11 @@ const Navbar = () => {
                   <LayoutDashboard className="mr-2 h-4 w-4" />
                   {t('navbar.dashboard')}
                 </NavLink>
-                <NavLink 
+                {/* Other authenticated links... */}
+                 <NavLink 
                   to="/projects" 
                   className={({ isActive }) => 
-                    `flex items-center px-3 py-2 rounded-md text-sm font-medium ${
+                    `flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                       isActive ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
                     }`
                   }
@@ -75,7 +77,7 @@ const Navbar = () => {
                 <NavLink 
                   to="/suppliers" 
                   className={({ isActive }) => 
-                    `flex items-center px-3 py-2 rounded-md text-sm font-medium ${
+                    `flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                       isActive ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
                     }`
                   }
@@ -86,7 +88,7 @@ const Navbar = () => {
                  <NavLink 
                   to="/users" 
                   className={({ isActive }) => 
-                    `flex items-center px-3 py-2 rounded-md text-sm font-medium ${
+                    `flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                       isActive ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
                     }`
                   }
@@ -97,7 +99,7 @@ const Navbar = () => {
                 <NavLink 
                   to="/import-materials" 
                   className={({ isActive }) => 
-                    `flex items-center px-3 py-2 rounded-md text-sm font-medium ${
+                    `flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                       isActive ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
                     }`
                   }
@@ -108,7 +110,7 @@ const Navbar = () => {
                  <NavLink 
                   to="/material-history" 
                   className={({ isActive }) => 
-                    `flex items-center px-3 py-2 rounded-md text-sm font-medium ${
+                    `flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                       isActive ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
                     }`
                   }
@@ -118,12 +120,34 @@ const Navbar = () => {
                 </NavLink>
               </>
             ) : (
-              // Unauthenticated Links
+              // Unauthenticated Links - Centered
               <>
                  <NavLink 
-                  to="/resources" // Correct path
+                  to="/features" 
                   className={({ isActive }) => 
-                    `flex items-center px-3 py-2 rounded-md text-sm font-medium ${
+                    `flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                      isActive ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
+                    }`
+                  }
+                >
+                  <ListChecks className="mr-2 h-4 w-4" /> 
+                  {t('navbar.features')}
+                </NavLink>
+                 <NavLink 
+                  to="/pricing" 
+                  className={({ isActive }) => 
+                    `flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                      isActive ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
+                    }`
+                  }
+                >
+                  <DollarSign className="mr-2 h-4 w-4" /> 
+                  {t('navbar.pricing')}
+                </NavLink>
+                 <NavLink 
+                  to="/resources" 
+                  className={({ isActive }) => 
+                    `flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                       isActive ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
                     }`
                   }
@@ -131,27 +155,44 @@ const Navbar = () => {
                   <BookOpen className="mr-2 h-4 w-4" /> 
                   {t('navbar.resources')}
                 </NavLink>
-                 <NavLink 
-                  to="/about-us" // Correct path
-                  className={({ isActive }) => 
-                    `flex items-center px-3 py-2 rounded-md text-sm font-medium ${
-                      isActive ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
-                    }`
-                  }
-                >
-                   <Info className="mr-2 h-4 w-4" /> 
-                  {t('navbar.aboutUs')}
-                </NavLink>
               </>
             )}
           </div>
 
           {/* Right Side Actions */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2"> 
+             {/* Unauthenticated Links - Right */}
+             {!isAuthenticated && (
+               <>
+                  <NavLink 
+                    to="/about-us" 
+                    className={({ isActive }) => 
+                      `hidden lg:flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${ 
+                        isActive ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
+                      }`
+                    }
+                  >
+                    <Info className="mr-2 h-4 w-4" /> 
+                    {t('navbar.aboutUs')}
+                  </NavLink>
+                   <NavLink 
+                    to="/support" 
+                    className={({ isActive }) => 
+                      `hidden lg:flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${ 
+                        isActive ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
+                      }`
+                    }
+                  >
+                    <LifeBuoy className="mr-2 h-4 w-4" /> 
+                    {t('navbar.support')}
+                  </NavLink>
+               </>
+             )}
+
             {/* Language Switcher */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon">
+                <Button variant="ghost" size="icon" className="transition-colors hover:bg-muted/50">
                   <Languages className="h-5 w-5" />
                 </Button>
               </DropdownMenuTrigger>
@@ -203,13 +244,13 @@ const Navbar = () => {
             ) : (
               // Login and Register Buttons for Unauthenticated Users
               <div className="flex items-center space-x-2">
-                 <Button variant="ghost" asChild>
+                 <Button variant="ghost" asChild className="transition-colors hover:bg-muted/50">
                    <Link to="/login">
                      <LogIn className="mr-2 h-4 w-4" />
                      {t('navbar.login')} 
                    </Link>
                  </Button>
-                 <Button asChild>
+                 <Button asChild className="transition-transform hover:scale-105">
                    <Link to="/login"> {/* Point Register to Login for now */}
                      <UserPlus className="mr-2 h-4 w-4" /> 
                      {t('navbar.register')} 

@@ -24,6 +24,7 @@ import SupportPage from "./pages/Support";
 import PricingPage from "./pages/Pricing";
 import TermsPage from "./pages/Terms";
 import PrivacyPage from "./pages/Privacy";
+import FeaturesPage from "./pages/Features"; // Import FeaturesPage
 import { generateMockProjects, generateMockUsers, createUserMock } from "./utils/userUtils"; 
 import AppLayout from "./components/AppLayout";
 import { v4 as uuidv4 } from "uuid";
@@ -204,6 +205,10 @@ const App = () => {
               <Route path="/support" element={<SupportPage />} />
               <Route path="/pricing" element={<PricingPage />} />
               <Route path="/terms" element={<TermsPage />} />
+              <Route path="/privacy" element={<PrivacyPage />} />
+              <Route path="/features" element={<FeaturesPage />} /> {/* Add route for Features */}
+              
+              {/* Protected routes */}
               <Route path="/privacy" element={<PrivacyPage />} />
               
               {/* Protected routes */}

@@ -84,6 +84,28 @@
           "support": "Suport",
           "pricing": "Prețuri",
           "terms": "Termeni și Condiții",
-          "privacy": "Politică de Confidențialitate"
+          "privacy": "Politică de Confidențialitate",
+          "features": "Funcționalități" 
+       },
+       "navbar": { 
+         "title": "Manager Materiale",
+         "dashboard": "Dashboard",
+         "projects": "Proiecte",
+         "suppliers": "Furnizori",
+         "users": "Utilizatori",
+         "login": "Autentificare",
+         "logout": "Deconectare",
+         "language": "Limbă",
+         "settings": "Setări",
+         "import": "Import",
+         "history": "Istoric",
+         "resources": "Resurse",
+         "aboutUs": "Despre Noi",
+         "register": "Înregistrare",
+         "learnMore": "Află Mai Mult",
+         "requestDemo": "Cere Demo",
+         "features": "Funcționalități", 
+         "support": "Suport", 
+         "pricing": "Prețuri" 
        }
     }
