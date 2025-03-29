@@ -8,11 +8,12 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Boxes, Mail, Lock, User, ArrowLeft, AlertCircle } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
+import { useAuth } from '@/App';
 
 // Form validation schemas
 const loginSchema = z.object({
@@ -39,7 +40,7 @@ const verifySchema = z.object({
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { toast } = useToast();
+  const { login } = useAuth();
   const [activeTab, setActiveTab] = useState('login');
   const [isResetOpen, setIsResetOpen] = useState(false);
   const [isVerifyOpen, setIsVerifyOpen] = useState(false);
@@ -101,21 +102,19 @@ const Login = () => {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      toast({
-        title: "Login Successful",
+      // Use the auth context to login
+      login(data.email);
+      
+      toast.success("Login Successful", {
         description: "Welcome back to ConstruxHub",
       });
       
-      // Store user session (in a real app, this would be a JWT or similar)
-      localStorage.setItem('isAuthenticated', 'true');
-      localStorage.setItem('userEmail', data.email);
-      
-      navigate('/dashboard');
+      // Get the return URL from location state, or default to dashboard
+      const from = (location.state as any)?.from?.pathname || '/dashboard';
+      navigate(from);
     } catch (error) {
-      toast({
-        title: "Login Failed",
+      toast.error("Login Failed", {
         description: "Invalid email or password. Please try again.",
-        variant: "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -136,15 +135,12 @@ const Login = () => {
       setResetEmail(data.email);
       setIsVerifyOpen(true);
       
-      toast({
-        title: "Verification Email Sent",
+      toast.success("Verification Email Sent", {
         description: `We've sent a verification code to ${data.email}`,
       });
     } catch (error) {
-      toast({
-        title: "Signup Failed",
+      toast.error("Signup Failed", {
         description: "There was an error creating your account. Please try again.",
-        variant: "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -165,15 +161,12 @@ const Login = () => {
       setIsResetOpen(false);
       setIsVerifyOpen(true);
       
-      toast({
-        title: "Reset Email Sent",
+      toast.success("Reset Email Sent", {
         description: `We've sent a password reset code to ${data.email}`,
       });
     } catch (error) {
-      toast({
-        title: "Request Failed",
+      toast.error("Request Failed", {
         description: "There was an error sending the reset email. Please try again.",
-        variant: "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -192,32 +185,39 @@ const Login = () => {
       
       setIsVerifyOpen(false);
       
-      toast({
-        title: "Verification Successful",
-        description: activeTab === 'signup' 
-          ? "Your account has been created successfully" 
-          : "Your password has been reset successfully",
-      });
-      
       if (activeTab === 'signup') {
-        // For demo, redirect to dashboard after signup verification
-        localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('userEmail', resetEmail);
+        toast.success("Account Created", {
+          description: "Your account has been created successfully",
+        });
+        
+        // For demo, login after signup verification
+        login(resetEmail);
         navigate('/dashboard');
       } else {
+        toast.success("Password Reset", {
+          description: "Your password has been reset successfully",
+        });
+        
         // For password reset, go back to login tab
         setActiveTab('login');
       }
     } catch (error) {
-      toast({
-        title: "Verification Failed",
+      toast.error("Verification Failed", {
         description: "Invalid verification code. Please try again.",
-        variant: "destructive"
       });
     } finally {
       setIsLoading(false);
     }
   };
+
+  // Helper function to generate a random 6-digit code for demo
+  const generateVerificationCode = () => {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+  };
+
+  // For demo, console log a verification code
+  const demoVerificationCode = useState(() => generateVerificationCode())[0];
+  console.log('Demo verification code (for testing):', demoVerificationCode);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-accent/10 flex flex-col">
@@ -492,6 +492,10 @@ const Login = () => {
               We've sent a 6-digit code to {resetEmail}. 
               Enter the code below to {activeTab === 'signup' ? 'verify your account' : 'reset your password'}.
             </DialogDescription>
+            <div className="flex items-center mt-2 text-sm text-amber-500">
+              <AlertCircle className="h-4 w-4 mr-1" />
+              <span>For demo, use code: {demoVerificationCode}</span>
+            </div>
           </DialogHeader>
           
           <Form {...verifyForm}>

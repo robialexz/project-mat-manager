@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-route
 import { useState, useEffect, createContext, useContext } from "react";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
+import Projects from "./pages/Projects";
 import ProjectDetails from "./pages/ProjectDetails";
 import Users from "./pages/Users";
 import Login from "./pages/Login";
@@ -25,6 +26,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   userEmail: string | null;
   checkAuth: () => boolean;
+  login: (email: string) => void;
   logout: () => void;
 }
 
@@ -32,6 +34,7 @@ const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   userEmail: null,
   checkAuth: () => false,
+  login: () => {},
   logout: () => {},
 });
 
@@ -70,8 +73,14 @@ const App = () => {
   
   // Auth functions
   const checkAuth = () => {
-    const auth = localStorage.getItem('isAuthenticated') === 'true';
-    return auth;
+    return localStorage.getItem('isAuthenticated') === 'true';
+  };
+  
+  const login = (email: string) => {
+    localStorage.setItem('isAuthenticated', 'true');
+    localStorage.setItem('userEmail', email);
+    setIsAuthenticated(true);
+    setUserEmail(email);
   };
   
   const logout = () => {
@@ -85,6 +94,7 @@ const App = () => {
     isAuthenticated,
     userEmail,
     checkAuth,
+    login,
     logout,
   };
 
@@ -103,6 +113,14 @@ const App = () => {
                 element={
                   <ProtectedRoute>
                     <Dashboard />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/projects" 
+                element={
+                  <ProtectedRoute>
+                    <Projects />
                   </ProtectedRoute>
                 } 
               />
