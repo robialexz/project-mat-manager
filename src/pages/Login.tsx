@@ -45,6 +45,7 @@ const registerSchema = z.object({
 });
 
 export default function Login() {
+  console.log("Login component rendering..."); // Add console log for debugging
   const [isLoading, setIsLoading] = useState(false);
   const { login, register, isAuthenticated } = useAuth();
   const navigate = useNavigate();
