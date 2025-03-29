@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ProjectCard from '@/components/ProjectCard';
 import Navbar from '@/components/Navbar';
 import { generateMockProjects, getProjectSummary } from '@/utils/materialUtils';
-import { Package, Search, PlusCircle, Users, Building } from 'lucide-react';
+import { Package, Search, PlusCircle, Users, Building, Boxes } from 'lucide-react';
 import MaterialCategorySummary from '@/components/MaterialCategorySummary';
 
 const Dashboard = () => {
@@ -140,7 +140,6 @@ const Dashboard = () => {
                 <ProjectCard 
                   key={project.id} 
                   project={project} 
-                  summary={getProjectSummary(project)} 
                 />
               ))}
             </div>
@@ -153,7 +152,6 @@ const Dashboard = () => {
                   <ProjectCard 
                     key={project.id} 
                     project={project} 
-                    summary={getProjectSummary(project)} 
                   />
                 ))
               }
@@ -167,7 +165,6 @@ const Dashboard = () => {
                   <ProjectCard 
                     key={project.id} 
                     project={project} 
-                    summary={getProjectSummary(project)} 
                   />
                 ))
               }

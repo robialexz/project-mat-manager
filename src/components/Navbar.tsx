@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Menu, Home, Package, Users, FileSpreadsheet, Settings } from 'lucide-react';
+import { Menu, Home, Package, Users, FileSpreadsheet, Settings, Boxes, LogOut, LayoutDashboard } from 'lucide-react';
 
-export default function Navbar() {
+const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   const closeMenu = () => setMobileMenuOpen(false);
@@ -17,13 +17,13 @@ export default function Navbar() {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link to="/" className="flex-shrink-0 flex items-center">
-              <Package className="h-8 w-8 text-primary" />
-              <span className="ml-2 text-xl font-bold">Mat Manager</span>
+              <Boxes className="h-8 w-8 text-primary" />
+              <span className="ml-2 text-xl font-bold">ConstruxHub</span>
             </Link>
             
             <div className="hidden md:ml-6 md:flex md:space-x-8">
               <Link to="/dashboard" className="border-transparent text-gray-500 hover:border-primary hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                <Home className="h-4 w-4 mr-1" />
+                <LayoutDashboard className="h-4 w-4 mr-1" />
                 Dashboard
               </Link>
               <Link to="/projects" className="border-transparent text-gray-500 hover:border-primary hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
@@ -41,6 +41,12 @@ export default function Navbar() {
             <Button variant="ghost" size="sm">
               <Settings className="h-4 w-4 mr-2" />
               Settings
+            </Button>
+            <Button variant="ghost" size="sm" asChild>
+              <Link to="/login">
+                <LogOut className="h-4 w-4 mr-2" />
+                Logout
+              </Link>
             </Button>
             <Avatar className="ml-4">
               <AvatarImage src="" />
@@ -62,7 +68,7 @@ export default function Navbar() {
                     className="flex items-center px-2 py-2 text-base font-medium rounded-md hover:bg-accent"
                     onClick={closeMenu}
                   >
-                    <Home className="mr-4 h-6 w-6 text-primary" />
+                    <LayoutDashboard className="mr-4 h-6 w-6 text-primary" />
                     Dashboard
                   </Link>
                   <Link 
@@ -110,4 +116,6 @@ export default function Navbar() {
       </div>
     </nav>
   );
-}
+};
+
+export default Navbar;
