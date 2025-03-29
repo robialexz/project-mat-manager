@@ -1,0 +1,41 @@
+{
+      "navbar": {
+        "title": "Gestore Materiali",
+        "dashboard": "Dashboard",
+        "projects": "Progetti",
+        "suppliers": "Fornitori",
+        "users": "Utenti",
+        "login": "Accedi",
+        "logout": "Esci",
+        "language": "Lingua",
+        "settings": "Impostazioni",
+        "import": "Importa",
+        "history": "Storico"
+      },
+      "homepage": {
+        "welcomeTitle": "Benvenuto nel Gestore Materiali",
+        "welcomeSubtitle": "Gestisci i tuoi progetti, materiali e fornitori in un unico posto.",
+        "startFreeTrial": "Inizia Prova Gratuita",
+        "viewDashboard": "Vedi Dashboard",
+        "totalProjects": "Progetti Totali",
+        "projectsSinceLastMonth": "+{count} dal mese scorso",
+        "pendingTasks": "Attività Pendenti",
+        "tasksAcrossProjects": "In {count} progetti",
+        "overdueMaterials": "Materiali Scaduti",
+        "checkSupplierUpdates": "Controlla aggiornamenti fornitori",
+        "projectStatusOverview": "Riepilogo Stato Progetti",
+        "projectStatusDescription": "Distribuzione dei progetti per stato corrente.",
+        "projects": "Progetti",
+        "projectsFeatureDescription": "Organizza, monitora i progressi e gestisci in modo efficiente tutti gli aspetti dei tuoi progetti di costruzione.",
+        "viewProjects": "Vedi Progetti",
+        "materials": "Materiali",
+        "materialsFeatureDescription": "Mantieni un inventario dettagliato dei materiali, gestisci i livelli delle scorte e monitora l'utilizzo nei progetti.",
+        "viewMaterials": "Vedi Materiali",
+        "suppliers": "Fornitori",
+        "suppliersFeatureDescription": "Mantieni un database dei tuoi fornitori, gestisci i contatti e monitora le prestazioni.",
+        "viewSuppliers": "Vedi Fornitori",
+        "users": "Utenti",
+        "usersFeatureDescription": "Gestisci gli account utente, i ruoli e le autorizzazioni all'interno dell'applicazione.",
+        "viewUsers": "Vedi Utenti"
+      }
+    }

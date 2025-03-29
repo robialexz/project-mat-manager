@@ -1,0 +1,41 @@
+{
+      "navbar": {
+        "title": "Material Manager",
+        "dashboard": "Dashboard",
+        "projects": "Projects",
+        "suppliers": "Suppliers",
+        "users": "Users",
+        "login": "Login",
+        "logout": "Logout",
+        "language": "Language",
+        "settings": "Settings",
+        "import": "Import",
+        "history": "History"
+      },
+      "homepage": {
+        "welcomeTitle": "Welcome to the Material Manager",
+        "welcomeSubtitle": "Manage your projects, materials, and suppliers in one place.",
+        "startFreeTrial": "Start Free Trial",
+        "viewDashboard": "View Dashboard",
+        "totalProjects": "Total Projects",
+        "projectsSinceLastMonth": "+{count} since last month",
+        "pendingTasks": "Pending Tasks",
+        "tasksAcrossProjects": "Across {count} projects",
+        "overdueMaterials": "Overdue Materials",
+        "checkSupplierUpdates": "Check supplier updates",
+        "projectStatusOverview": "Project Status Overview",
+        "projectStatusDescription": "Distribution of projects by their current status.",
+        "projects": "Projects",
+        "projectsFeatureDescription": "Organize, track progress, and manage all aspects of your construction projects efficiently.",
+        "viewProjects": "View Projects",
+        "materials": "Materials",
+        "materialsFeatureDescription": "Keep a detailed inventory of materials, manage stock levels, and track usage across projects.",
+        "viewMaterials": "View Materials",
+        "suppliers": "Suppliers",
+        "suppliersFeatureDescription": "Maintain a database of your suppliers, manage contacts, and track performance.",
+        "viewSuppliers": "View Suppliers",
+        "users": "Users",
+        "usersFeatureDescription": "Manage user accounts, roles, and permissions within the application.",
+        "viewUsers": "View Users"
+      }
+    }

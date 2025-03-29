@@ -1,0 +1,41 @@
+{
+      "navbar": {
+        "title": "Manager Materiale",
+        "dashboard": "Dashboard",
+        "projects": "Proiecte",
+        "suppliers": "Furnizori",
+        "users": "Utilizatori",
+        "login": "Autentificare",
+        "logout": "Deconectare",
+        "language": "Limbă",
+        "settings": "Setări",
+        "import": "Import",
+        "history": "Istoric"
+      },
+      "homepage": {
+        "welcomeTitle": "Bun venit la Managerul de Materiale",
+        "welcomeSubtitle": "Gestionați proiectele, materialele și furnizorii într-un singur loc.",
+        "startFreeTrial": "Începe Perioada Gratuită",
+        "viewDashboard": "Vezi Dashboard",
+        "totalProjects": "Total Proiecte",
+        "projectsSinceLastMonth": "+{count} de luna trecută",
+        "pendingTasks": "Sarcini în Așteptare",
+        "tasksAcrossProjects": "În {count} proiecte",
+        "overdueMaterials": "Materiale Întârziate",
+        "checkSupplierUpdates": "Verifică actualizări furnizori",
+        "projectStatusOverview": "Sumar Stare Proiecte",
+        "projectStatusDescription": "Distribuția proiectelor după starea curentă.",
+        "projects": "Proiecte",
+        "projectsFeatureDescription": "Organizați, urmăriți progresul și gestionați eficient toate aspectele proiectelor dvs. de construcție.",
+        "viewProjects": "Vezi Proiecte",
+        "materials": "Materiale",
+        "materialsFeatureDescription": "Mențineți un inventar detaliat al materialelor, gestionați stocurile și urmăriți utilizarea în cadrul proiectelor.",
+        "viewMaterials": "Vezi Materiale",
+        "suppliers": "Furnizori",
+        "suppliersFeatureDescription": "Mențineți o bază de date a furnizorilor, gestionați contactele și urmăriți performanța.",
+        "viewSuppliers": "Vezi Furnizori",
+        "users": "Utilizatori",
+        "usersFeatureDescription": "Gestionați conturile de utilizator, rolurile și permisiunile în cadrul aplicației.",
+        "viewUsers": "Vezi Utilizatori"
+      }
+    }

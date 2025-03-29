@@ -1,0 +1,41 @@
+{
+      "navbar": {
+        "title": "Gestor Materiales",
+        "dashboard": "Dashboard",
+        "projects": "Proyectos",
+        "suppliers": "Proveedores",
+        "users": "Usuarios",
+        "login": "Iniciar Sesión",
+        "logout": "Cerrar Sesión",
+        "language": "Idioma",
+        "settings": "Configuración",
+        "import": "Importar",
+        "history": "Historial"
+      },
+      "homepage": {
+        "welcomeTitle": "Bienvenido al Gestor de Materiales",
+        "welcomeSubtitle": "Gestiona tus proyectos, materiales y proveedores en un solo lugar.",
+        "startFreeTrial": "Iniciar Prueba Gratuita",
+        "viewDashboard": "Ver Dashboard",
+        "totalProjects": "Proyectos Totales",
+        "projectsSinceLastMonth": "+{count} desde el mes pasado",
+        "pendingTasks": "Tareas Pendientes",
+        "tasksAcrossProjects": "En {count} proyectos",
+        "overdueMaterials": "Materiales Atrasados",
+        "checkSupplierUpdates": "Revisar actualizaciones de proveedores",
+        "projectStatusOverview": "Resumen Estado Proyectos",
+        "projectStatusDescription": "Distribución de proyectos por su estado actual.",
+        "projects": "Proyectos",
+        "projectsFeatureDescription": "Organice, siga el progreso y gestione todos los aspectos de sus proyectos de construcción de manera eficiente.",
+        "viewProjects": "Ver Proyectos",
+        "materials": "Materiales",
+        "materialsFeatureDescription": "Mantenga un inventario detallado de materiales, gestione los niveles de stock y siga el uso en los proyectos.",
+        "viewMaterials": "Ver Materiales",
+        "suppliers": "Proveedores",
+        "suppliersFeatureDescription": "Mantenga una base de datos de sus proveedores, gestione contactos y siga el rendimiento.",
+        "viewSuppliers": "Ver Proveedores",
+        "users": "Usuarios",
+        "usersFeatureDescription": "Gestione las cuentas de usuario, los roles y los permisos dentro de la aplicación.",
+        "viewUsers": "Ver Usuarios"
+      }
+    }

@@ -1,157 +1,192 @@
-
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
+import { Boxes, LayoutDashboard, Building, Users, LogIn, LogOut, Languages, Upload, History, Settings } from 'lucide-react'; // Added missing icons
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Menu, Home, Package, Users, FileSpreadsheet, Settings, Boxes, LogOut, LayoutDashboard } from 'lucide-react';
-import { useAuth } from "@/App";
-import { toast } from "sonner";
+import { useAuth } from '@/App';
+import { useTranslation } from 'react-i18next'; // Import useTranslation
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"; 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel, 
+  DropdownMenuSeparator, 
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
-  const { isAuthenticated, userEmail, logout } = useAuth();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const navigate = useNavigate();
-  
-  const closeMenu = () => setMobileMenuOpen(false);
-  
-  const handleLogout = () => {
-    logout();
-    toast.success("You have been logged out successfully");
-    navigate("/");
+  const { isAuthenticated, userEmail, logout } = useAuth(); // Use mock auth
+  const { t, i18n } = useTranslation(); // Initialize translation
+
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
   };
 
-  // Get initials for avatar
+  const languages = [
+    { code: 'en', name: 'English' },
+    { code: 'ro', name: 'Română' },
+    { code: 'es', name: 'Español' },
+    { code: 'it', name: 'Italiano' },
+  ];
+
+   // Get initials for avatar
   const getInitials = () => {
     if (!userEmail) return "?";
     return userEmail.substring(0, 2).toUpperCase();
   };
 
   return (
-    <nav className="border-b bg-background sticky top-0 z-10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          <div className="flex items-center">
-            <Link to="/" className="flex-shrink-0 flex items-center">
-              <Boxes className="h-8 w-8 text-primary" />
-              <span className="ml-2 text-xl font-bold">ConstruxHub</span>
-            </Link>
-            
+    <nav className="bg-card border-b shadow-sm sticky top-0 z-50"> {/* Added sticky and z-index */}
+      <div className="container mx-auto px-4">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo and Title */}
+          <Link to="/" className="flex items-center space-x-2 text-lg font-semibold">
+            <Boxes className="h-6 w-6 text-primary" />
+            <span>{t('navbar.title')}</span> {/* Use translation */}
+          </Link>
+
+          {/* Navigation Links (Desktop) */}
+          <div className="hidden md:flex items-center space-x-4">
             {isAuthenticated && (
-              <div className="hidden md:ml-6 md:flex md:space-x-8">
-                <Link to="/dashboard" className="border-transparent text-gray-500 hover:border-primary hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                  <LayoutDashboard className="h-4 w-4 mr-1" />
-                  Dashboard
-                </Link>
-                <Link to="/dashboard" className="border-transparent text-gray-500 hover:border-primary hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                  <FileSpreadsheet className="h-4 w-4 mr-1" />
-                  Projects
-                </Link>
-                <Link to="/users" className="border-transparent text-gray-500 hover:border-primary hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                  <Users className="h-4 w-4 mr-1" />
-                  Users
-                </Link>
-              </div>
+              <>
+                <NavLink 
+                  to="/dashboard" 
+                  className={({ isActive }) => 
+                    `flex items-center px-3 py-2 rounded-md text-sm font-medium ${
+                      isActive ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
+                    }`
+                  }
+                >
+                  <LayoutDashboard className="mr-2 h-4 w-4" />
+                  {t('navbar.dashboard')}
+                </NavLink>
+                <NavLink 
+                  to="/projects" 
+                  className={({ isActive }) => 
+                    `flex items-center px-3 py-2 rounded-md text-sm font-medium ${
+                      isActive ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
+                    }`
+                  }
+                >
+                  <Boxes className="mr-2 h-4 w-4" />
+                  {t('navbar.projects')}
+                </NavLink>
+                <NavLink 
+                  to="/suppliers" 
+                  className={({ isActive }) => 
+                    `flex items-center px-3 py-2 rounded-md text-sm font-medium ${
+                      isActive ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
+                    }`
+                  }
+                >
+                  <Building className="mr-2 h-4 w-4" />
+                  {t('navbar.suppliers')}
+                </NavLink>
+                 <NavLink 
+                  to="/users" 
+                  className={({ isActive }) => 
+                    `flex items-center px-3 py-2 rounded-md text-sm font-medium ${
+                      isActive ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
+                    }`
+                  }
+                >
+                  <Users className="mr-2 h-4 w-4" />
+                  {t('navbar.users')}
+                </NavLink>
+                {/* Add Import and History links back */}
+                <NavLink 
+                  to="/import-materials" 
+                  className={({ isActive }) => 
+                    `flex items-center px-3 py-2 rounded-md text-sm font-medium ${
+                      isActive ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
+                    }`
+                  }
+                >
+                  <Upload className="mr-2 h-4 w-4" />
+                  {t('navbar.import')}
+                </NavLink>
+                 <NavLink 
+                  to="/material-history" 
+                  className={({ isActive }) => 
+                    `flex items-center px-3 py-2 rounded-md text-sm font-medium ${
+                      isActive ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
+                    }`
+                  }
+                >
+                  <History className="mr-2 h-4 w-4" />
+                  {t('navbar.history')}
+                </NavLink>
+              </>
             )}
           </div>
-          
-          <div className="hidden md:flex items-center">
+
+          {/* Right Side Actions */}
+          <div className="flex items-center space-x-3">
+            {/* Language Switcher */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <Languages className="h-5 w-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {languages.map((lang) => (
+                  <DropdownMenuItem 
+                    key={lang.code} 
+                    onClick={() => changeLanguage(lang.code)}
+                    disabled={i18n.resolvedLanguage === lang.code}
+                  >
+                    {lang.name}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* User Menu / Auth Button */}
             {isAuthenticated ? (
-              <>
-                <Button variant="ghost" size="sm">
-                  <Settings className="h-4 w-4 mr-2" />
-                  Settings
-                </Button>
-                <Button variant="ghost" size="sm" onClick={handleLogout}>
-                  <LogOut className="h-4 w-4 mr-2" />
-                  Logout
-                </Button>
-                <Avatar className="ml-4">
-                  <AvatarImage src="" />
-                  <AvatarFallback className="bg-primary text-primary-foreground">{getInitials()}</AvatarFallback>
-                </Avatar>
-              </>
+              <DropdownMenu>
+                 {/* Use asChild and ensure Button is the single direct child */}
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage src="" alt={userEmail || 'User'} /> {/* Placeholder */}
+                      <AvatarFallback>{getInitials()}</AvatarFallback>
+                    </Avatar>
+                  </Button> 
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">
+                        {/* Placeholder for name */}
+                        {userEmail} 
+                      </p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        {userEmail}
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                     <Link to="/settings">
+                       <Settings className="mr-2 h-4 w-4" />
+                       <span>{t('navbar.settings')}</span> 
+                     </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={logout}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>{t('navbar.logout')}</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             ) : (
-              <Button asChild variant="default">
+              <Button asChild>
                 <Link to="/login">
-                  Login / Sign Up
+                  <LogIn className="mr-2 h-4 w-4" />
+                  {t('navbar.login')} 
                 </Link>
               </Button>
             )}
-          </div>
-          
-          <div className="flex md:hidden items-center">
-            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Menu className="h-6 w-6" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="left">
-                <div className="py-6 px-4 space-y-6">
-                  {isAuthenticated ? (
-                    <>
-                      <Link 
-                        to="/dashboard" 
-                        className="flex items-center px-2 py-2 text-base font-medium rounded-md hover:bg-accent"
-                        onClick={closeMenu}
-                      >
-                        <LayoutDashboard className="mr-4 h-6 w-6 text-primary" />
-                        Dashboard
-                      </Link>
-                      <Link 
-                        to="/dashboard" 
-                        className="flex items-center px-2 py-2 text-base font-medium rounded-md hover:bg-accent"
-                        onClick={closeMenu}
-                      >
-                        <FileSpreadsheet className="mr-4 h-6 w-6 text-primary" />
-                        Projects
-                      </Link>
-                      <Link 
-                        to="/users" 
-                        className="flex items-center px-2 py-2 text-base font-medium rounded-md hover:bg-accent"
-                        onClick={closeMenu}
-                      >
-                        <Users className="mr-4 h-6 w-6 text-primary" />
-                        Users
-                      </Link>
-                      <div 
-                        className="flex items-center px-2 py-2 text-base font-medium rounded-md hover:bg-accent cursor-pointer"
-                        onClick={() => {
-                          closeMenu();
-                          handleLogout();
-                        }}
-                      >
-                        <LogOut className="mr-4 h-6 w-6 text-primary" />
-                        Logout
-                      </div>
-                      
-                      <div className="pt-6 border-t border-gray-200">
-                        <div className="flex items-center">
-                          <Avatar>
-                            <AvatarImage src="" />
-                            <AvatarFallback className="bg-primary text-primary-foreground">{getInitials()}</AvatarFallback>
-                          </Avatar>
-                          <div className="ml-3">
-                            <p className="text-base font-medium">User</p>
-                            <p className="text-sm text-gray-500">{userEmail}</p>
-                          </div>
-                        </div>
-                      </div>
-                    </>
-                  ) : (
-                    <Link 
-                      to="/login" 
-                      className="flex items-center px-2 py-2 text-base font-medium rounded-md hover:bg-accent"
-                      onClick={closeMenu}
-                    >
-                      <LogOut className="mr-4 h-6 w-6 text-primary" />
-                      Login / Sign Up
-                    </Link>
-                  )}
-                </div>
-              </SheetContent>
-            </Sheet>
           </div>
         </div>
       </div>
