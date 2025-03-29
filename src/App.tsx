@@ -14,8 +14,10 @@ import SupplierDetails from "./pages/SupplierDetails";
 import Users from "./pages/Users";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
-import SettingsPage from "./pages/Settings"; // Import SettingsPage
-import { generateMockProjects } from "./utils/userUtils"; // Corrected path
+import SettingsPage from "./pages/Settings"; 
+import ImportMaterialsPage from "./pages/ImportMaterials"; 
+import MaterialHistoryPage from "./pages/MaterialHistory"; // Import MaterialHistoryPage
+import { generateMockProjects } from "./utils/userUtils"; 
 import AppLayout from "./components/AppLayout";
 import { v4 as uuidv4 } from "uuid";
 import { User } from "./types";
@@ -227,8 +229,10 @@ const App = () => {
                 <Route path="/suppliers" element={<Suppliers />} />
                 <Route path="/suppliers/:id" element={<SupplierDetails />} />
                 <Route path="/users" element={<Users />} />
-                {/* Add route for SettingsPage */}
                 <Route path="/settings" element={<SettingsPage />} /> 
+                <Route path="/import-materials" element={<ImportMaterialsPage />} /> 
+                {/* Add route for MaterialHistoryPage */}
+                <Route path="/material-history" element={<MaterialHistoryPage />} /> 
                 {/* Keep placeholders for other routes */}
                 <Route path="/calendar" element={<div className="container mx-auto p-8"><h1 className="text-3xl font-bold">Calendar (Coming Soon)</h1></div>} />
                 <Route path="/messages" element={<div className="container mx-auto p-8"><h1 className="text-3xl font-bold">Messages (Coming Soon)</h1></div>} />
