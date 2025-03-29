@@ -47,7 +47,7 @@ const Navbar = () => {
           </Link>
 
           {/* Navigation Links (Desktop) */}
-          <div className="hidden md:flex items-center space-x-1"> {/* Reduced space */}
+          <div className="hidden md:flex items-center space-x-1"> 
             {isAuthenticated ? (
               // Authenticated Links 
               <>
@@ -62,7 +62,6 @@ const Navbar = () => {
                   <LayoutDashboard className="mr-2 h-4 w-4" />
                   {t('navbar.dashboard')}
                 </NavLink>
-                {/* Other authenticated links... */}
                  <NavLink 
                   to="/projects" 
                   className={({ isActive }) => 
@@ -210,7 +209,7 @@ const Navbar = () => {
             </DropdownMenu>
 
             {/* User Menu / Auth Button */}
-            {isAuthenticated ? (
+            {isAuthenticated ? ( // Restore original condition
               <DropdownMenu>
                  <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-8 w-8 rounded-full">

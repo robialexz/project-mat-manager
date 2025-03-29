@@ -104,6 +104,10 @@ const App = () => {
   
   // Check if user is authenticated on initial load
   useEffect(() => {
+    // --- DEBUGGING: Force logout on refresh ---
+    // localStorage.clear(); 
+    // --- END DEBUGGING ---
+    
     const auth = localStorage.getItem('isAuthenticated') === 'true';
     const email = localStorage.getItem('userEmail');
     const id = localStorage.getItem('userId');
