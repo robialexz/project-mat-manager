@@ -1,15 +1,14 @@
-
 import { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/App';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { 
-  SidebarProvider, 
-  Sidebar, 
-  SidebarContent, 
-  SidebarHeader, 
-  SidebarMenu, 
-  SidebarMenuItem, 
+import {
+  SidebarProvider,
+  Sidebar,
+  SidebarContent,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuItem,
   SidebarMenuButton,
   SidebarFooter,
   SidebarRail,
@@ -17,14 +16,15 @@ import {
   SidebarInset
 } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
-import { 
-  LayoutDashboard, 
-  FileSpreadsheet, 
-  ShoppingBag, 
-  Users, 
-  Settings, 
-  LogOut, 
-  Boxes, 
+import { Card } from '@/components/ui/card';
+import {
+  LayoutDashboard,
+  FileSpreadsheet,
+  ShoppingBag,
+  Users,
+  Settings,
+  LogOut,
+  Boxes,
   Bell,
   Calendar,
   MessageCircle
@@ -34,7 +34,7 @@ import { toast } from 'sonner';
 const AppLayout = () => {
   const { userEmail, logout } = useAuth();
   const navigate = useNavigate();
-  
+
   const handleLogout = () => {
     logout();
     toast.success("You have been logged out successfully");
@@ -49,7 +49,7 @@ const AppLayout = () => {
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full">
+      <div className="flex min-h-screen w-full bg-muted/40">
         <Sidebar>
           <SidebarHeader>
             <div className="flex items-center gap-2 px-4">
@@ -57,7 +57,7 @@ const AppLayout = () => {
               <span className="text-xl font-bold">ConstruxHub</span>
             </div>
           </SidebarHeader>
-          
+
           <SidebarContent>
             <SidebarMenu>
               <SidebarMenuItem>
@@ -68,7 +68,7 @@ const AppLayout = () => {
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-              
+
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip="Projects">
                   <a href="/projects">
@@ -77,7 +77,7 @@ const AppLayout = () => {
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-              
+
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip="Suppliers">
                   <a href="/suppliers">
@@ -86,7 +86,7 @@ const AppLayout = () => {
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-              
+
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip="Team">
                   <a href="/users">
@@ -95,7 +95,7 @@ const AppLayout = () => {
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-              
+
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip="Calendar">
                   <a href="/calendar">
@@ -104,7 +104,7 @@ const AppLayout = () => {
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-              
+
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip="Messages">
                   <a href="/messages">
@@ -115,7 +115,7 @@ const AppLayout = () => {
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarContent>
-          
+
           <SidebarFooter>
             <div className="px-3 py-2">
               <SidebarMenu>
@@ -127,7 +127,7 @@ const AppLayout = () => {
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
-                
+
                 <SidebarMenuItem>
                   <SidebarMenuButton onClick={handleLogout} tooltip="Logout">
                     <LogOut className="h-5 w-5" />
@@ -136,7 +136,7 @@ const AppLayout = () => {
                 </SidebarMenuItem>
               </SidebarMenu>
             </div>
-            
+
             <div className="border-t p-4">
               <div className="flex items-center gap-3">
                 <Avatar>
@@ -150,31 +150,33 @@ const AppLayout = () => {
               </div>
             </div>
           </SidebarFooter>
-          
+
           <SidebarRail />
         </Sidebar>
-        
-        <SidebarInset className="p-0">
-          <div className="flex h-14 items-center justify-between border-b px-4">
+
+        <SidebarInset className="p-0 flex flex-col">
+          <div className="flex h-14 shrink-0 items-center justify-between border-b bg-background px-4 sm:px-6">
             <div className="flex items-center gap-2">
               <SidebarTrigger />
             </div>
-            
+
             <div className="flex items-center gap-4">
-              <Button variant="ghost" size="icon" className="relative">
+              <Button variant="ghost" size="icon" className="relative rounded-full">
                 <Bell className="h-5 w-5" />
                 <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground">3</span>
               </Button>
-              
+
               <Avatar className="h-8 w-8">
                 <AvatarImage src="" />
                 <AvatarFallback className="bg-primary text-primary-foreground">{getInitials()}</AvatarFallback>
               </Avatar>
             </div>
           </div>
-          
-          <main className="flex-1 overflow-auto">
-            <Outlet />
+
+          <main className="flex-1 overflow-auto p-4 sm:p-6">
+            <Card className="h-full p-4 sm:p-6">
+              <Outlet />
+            </Card>
           </main>
         </SidebarInset>
       </div>
