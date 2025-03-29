@@ -2,17 +2,15 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { 
-  FileSpreadsheet, 
-  Package, 
   ArrowRight, 
-  FileUp, 
-  Users, 
-  Settings, 
   ChevronRight,
-  Building,
-  LayoutDashboard,
   Boxes,
-  Truck
+  CheckCircle,
+  BarChart3,
+  Clock,
+  Users,
+  ShieldCheck,
+  Zap
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -56,13 +54,13 @@ const Index = () => {
           <span className="text-primary">Construx</span>Hub
         </h1>
         <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-10 animate-fade-in stagger-delay-2">
-          Streamline your construction material tracking and procurement workflow
+          The future of construction material management is here
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-4 animate-fade-in stagger-delay-3">
           <Button
             size="lg"
             className="gap-2 hover-lift"
-            onClick={() => navigate('/dashboard')}
+            onClick={() => navigate('/login')}
           >
             Get Started
             <ArrowRight className="h-4 w-4" />
@@ -79,41 +77,174 @@ const Index = () => {
         </div>
       </header>
       
+      {/* Statistics Section */}
+      <section className="container mx-auto px-4 py-20 bg-accent/5 rounded-3xl my-10">
+        <h2 className="text-3xl font-bold text-center mb-12 animate-fade-in">
+          Transform Your Construction Management
+        </h2>
+        
+        <div className="grid md:grid-cols-3 gap-10">
+          <div className="bg-card p-8 rounded-xl shadow-lg hover-lift animate-fade-in stagger-delay-1">
+            <div className="flex items-center mb-4">
+              <div className="h-12 w-12 bg-primary/10 rounded-full flex items-center justify-center">
+                <Zap className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="text-2xl font-bold ml-4">30%</h3>
+            </div>
+            <p className="text-muted-foreground">
+              Faster material procurement process compared to traditional methods
+            </p>
+          </div>
+          
+          <div className="bg-card p-8 rounded-xl shadow-lg hover-lift animate-fade-in stagger-delay-2">
+            <div className="flex items-center mb-4">
+              <div className="h-12 w-12 bg-primary/10 rounded-full flex items-center justify-center">
+                <BarChart3 className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="text-2xl font-bold ml-4">25%</h3>
+            </div>
+            <p className="text-muted-foreground">
+              Reduction in material waste through accurate tracking and forecasting
+            </p>
+          </div>
+          
+          <div className="bg-card p-8 rounded-xl shadow-lg hover-lift animate-fade-in stagger-delay-3">
+            <div className="flex items-center mb-4">
+              <div className="h-12 w-12 bg-primary/10 rounded-full flex items-center justify-center">
+                <Clock className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="text-2xl font-bold ml-4">40%</h3>
+            </div>
+            <p className="text-muted-foreground">
+              Time saved on administrative tasks and material management
+            </p>
+          </div>
+        </div>
+      </section>
+      
       {/* Features Section */}
       <section className="container mx-auto px-4 py-20">
         <h2 className="text-3xl font-bold text-center mb-12 animate-fade-in">
-          Smart Material Management
+          Enterprise-Grade Material Management
+        </h2>
+        
+        <div className="grid md:grid-cols-2 gap-12">
+          <div className="space-y-8">
+            <div className="flex items-start">
+              <CheckCircle className="h-6 w-6 text-primary mt-1 mr-4" />
+              <div>
+                <h3 className="text-xl font-bold mb-2">Custom Categories & Workflows</h3>
+                <p className="text-muted-foreground">
+                  Define your own material categories and customize workflows to match your specific project requirements.
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex items-start">
+              <CheckCircle className="h-6 w-6 text-primary mt-1 mr-4" />
+              <div>
+                <h3 className="text-xl font-bold mb-2">Advanced Timeline Visualization</h3>
+                <p className="text-muted-foreground">
+                  Track material delivery schedules with interactive timelines that provide immediate visibility into procurement status.
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex items-start">
+              <CheckCircle className="h-6 w-6 text-primary mt-1 mr-4" />
+              <div>
+                <h3 className="text-xl font-bold mb-2">Real-time Collaboration</h3>
+                <p className="text-muted-foreground">
+                  Work seamlessly with team members across locations with instant updates and notifications.
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="space-y-8">
+            <div className="flex items-start">
+              <CheckCircle className="h-6 w-6 text-primary mt-1 mr-4" />
+              <div>
+                <h3 className="text-xl font-bold mb-2">Comprehensive Analytics</h3>
+                <p className="text-muted-foreground">
+                  Make data-driven decisions with powerful analytics dashboards that provide insights into material costs and usage patterns.
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex items-start">
+              <CheckCircle className="h-6 w-6 text-primary mt-1 mr-4" />
+              <div>
+                <h3 className="text-xl font-bold mb-2">Secure Team Management</h3>
+                <p className="text-muted-foreground">
+                  Control access with role-based permissions and secure team invitations to ensure data integrity.
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex items-start">
+              <CheckCircle className="h-6 w-6 text-primary mt-1 mr-4" />
+              <div>
+                <h3 className="text-xl font-bold mb-2">Automated Notifications</h3>
+                <p className="text-muted-foreground">
+                  Stay informed with customizable email notifications about material deliveries and project milestones.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Testimonials Section */}
+      <section className="container mx-auto px-4 py-20 bg-accent/5 rounded-3xl my-10">
+        <h2 className="text-3xl font-bold text-center mb-12">
+          Trusted by Industry Leaders
         </h2>
         
         <div className="grid md:grid-cols-3 gap-8">
-          <div className="bg-card rounded-lg p-6 shadow-md hover-lift animate-fade-in stagger-delay-1">
-            <div className="h-12 w-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-              <FileUp className="h-6 w-6 text-primary" />
+          <div className="bg-card p-8 rounded-xl shadow-md hover-lift">
+            <div className="flex flex-col space-y-4">
+              <div className="flex items-center">
+                <div className="h-12 w-12 bg-primary/10 rounded-full"></div>
+                <div className="ml-4">
+                  <h4 className="font-bold">John Doe</h4>
+                  <p className="text-sm text-muted-foreground">Project Manager, ABC Construction</p>
+                </div>
+              </div>
+              <p className="text-muted-foreground italic">
+                "ConstruxHub has revolutionized how we manage materials. We've cut procurement time by 35% and virtually eliminated delivery-related delays."
+              </p>
             </div>
-            <h3 className="text-xl font-bold mb-2">Import from Excel</h3>
-            <p className="text-muted-foreground">
-              Easily import material lists from Excel or CSV files, or enter them manually into the system.
-            </p>
           </div>
           
-          <div className="bg-card rounded-lg p-6 shadow-md hover-lift animate-fade-in stagger-delay-2">
-            <div className="h-12 w-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-              <Truck className="h-6 w-6 text-primary" />
+          <div className="bg-card p-8 rounded-xl shadow-md hover-lift">
+            <div className="flex flex-col space-y-4">
+              <div className="flex items-center">
+                <div className="h-12 w-12 bg-primary/10 rounded-full"></div>
+                <div className="ml-4">
+                  <h4 className="font-bold">Jane Smith</h4>
+                  <p className="text-sm text-muted-foreground">Operations Director, XYZ Builders</p>
+                </div>
+              </div>
+              <p className="text-muted-foreground italic">
+                "The custom categories and workflow features allow us to adapt the system perfectly to our specialized industrial projects."
+              </p>
             </div>
-            <h3 className="text-xl font-bold mb-2">Track Deliveries</h3>
-            <p className="text-muted-foreground">
-              Monitor all changes to materials with timestamps and notifications for purchasing staff.
-            </p>
           </div>
           
-          <div className="bg-card rounded-lg p-6 shadow-md hover-lift animate-fade-in stagger-delay-3">
-            <div className="h-12 w-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-              <Users className="h-6 w-6 text-primary" />
+          <div className="bg-card p-8 rounded-xl shadow-md hover-lift">
+            <div className="flex flex-col space-y-4">
+              <div className="flex items-center">
+                <div className="h-12 w-12 bg-primary/10 rounded-full"></div>
+                <div className="ml-4">
+                  <h4 className="font-bold">Robert Johnson</h4>
+                  <p className="text-sm text-muted-foreground">CEO, Johnson Contracting</p>
+                </div>
+              </div>
+              <p className="text-muted-foreground italic">
+                "The timeline visualization gives us unprecedented clarity on our material deliveries. We can now plan our workforce with much greater precision."
+              </p>
             </div>
-            <h3 className="text-xl font-bold mb-2">Team Collaboration</h3>
-            <p className="text-muted-foreground">
-              Assign different roles to team members and collaborate efficiently on material procurement.
-            </p>
           </div>
         </div>
       </section>
@@ -122,17 +253,17 @@ const Index = () => {
       <section className="container mx-auto px-4 py-20">
         <div className="bg-primary/10 rounded-lg p-8 md:p-12 text-center animate-fade-in">
           <h2 className="text-2xl md:text-3xl font-bold mb-4">
-            Ready to optimize your material management?
+            Ready to transform your material management?
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
-            Get started today and see how ConstruxHub can streamline your construction material workflow.
+            Join thousands of construction professionals who have streamlined their operations with ConstruxHub.
           </p>
           <Button
             size="lg"
             className="hover-lift"
-            onClick={() => navigate('/dashboard')}
+            onClick={() => navigate('/login')}
           >
-            Get Started Now
+            Start Your Free Trial
           </Button>
         </div>
       </section>

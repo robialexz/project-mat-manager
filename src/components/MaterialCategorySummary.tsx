@@ -2,110 +2,139 @@
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Material } from '@/types';
-import { ChartContainer, ChartLegend, ChartLegendContent } from '@/components/ui/chart';
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
+import { ChartContainer } from '@/components/ui/chart';
+import { Badge } from '@/components/ui/badge';
+import { CalendarDays, Boxes, CheckCircle, Clock, AlertTriangle, Package } from 'lucide-react';
 
 interface MaterialCategorySummaryProps {
   materials: Material[];
 }
 
-const COLORS = [
-  '#8B5CF6',  // purple
-  '#0EA5E9',  // blue
-  '#F97316',  // orange
-  '#22C55E',  // green
-  '#EC4899',  // pink
-  '#EF4444',  // red
-  '#F59E0B',  // amber
-  '#64748B',  // slate
-];
-
 const MaterialCategorySummary: React.FC<MaterialCategorySummaryProps> = ({ materials }) => {
-  // Group materials by category and calculate totals
-  const categoryTotals = materials.reduce((acc: Record<string, number>, material) => {
+  // Group materials by category
+  const categorizedMaterials = materials.reduce((acc: Record<string, Material[]>, material) => {
     const category = material.category || 'Uncategorized';
     if (!acc[category]) {
-      acc[category] = 0;
+      acc[category] = [];
     }
-    if (material.price && material.quantity) {
-      acc[category] += material.price * material.quantity;
-    }
+    acc[category].push(material);
     return acc;
   }, {});
   
-  // Convert to array for the chart
-  const chartData = Object.entries(categoryTotals).map(([name, value], index) => ({
-    name,
-    value,
-    fill: COLORS[index % COLORS.length]
-  }));
+  // Calculate totals for each category
+  const categoryAnalytics = Object.entries(categorizedMaterials).map(([category, items]) => {
+    const totalValue = items.reduce((sum, item) => {
+      return sum + (item.price && item.quantity ? item.price * item.quantity : 0);
+    }, 0);
+    
+    const statusCounts = items.reduce((counts: Record<string, number>, item) => {
+      if (!counts[item.status]) counts[item.status] = 0;
+      counts[item.status]++;
+      return counts;
+    }, { pending: 0, ordered: 0, delivered: 0 });
+    
+    const deliveryProgress = Math.round((statusCounts.delivered / items.length) * 100);
+    
+    return {
+      category,
+      totalItems: items.length,
+      totalValue,
+      pending: statusCounts.pending,
+      ordered: statusCounts.ordered,
+      delivered: statusCounts.delivered,
+      deliveryProgress
+    };
+  });
   
-  // Calculate delivery status by category
-  const categoryStatus = materials.reduce((acc: Record<string, Record<string, number>>, material) => {
-    const category = material.category || 'Uncategorized';
-    if (!acc[category]) {
-      acc[category] = { pending: 0, ordered: 0, delivered: 0 };
-    }
-    acc[category][material.status] += 1;
-    return acc;
-  }, {});
+  // Sort categories by total value
+  categoryAnalytics.sort((a, b) => b.totalValue - a.totalValue);
   
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Materials by Category</CardTitle>
-        <CardDescription>Distribution of materials by category and status</CardDescription>
+        <CardTitle>Material Workflow Timeline</CardTitle>
+        <CardDescription>Current status of materials across all categories</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="h-80">
-          <ChartContainer 
-            config={{ 
-              value: { theme: { light: '#8B5CF6', dark: '#8B5CF6' } },
-            }}
-          >
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={chartData}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                  nameKey="name"
-                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                >
-                  {chartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.fill} />
-                  ))}
-                </Pie>
-                <Tooltip formatter={(value) => [`$${value.toLocaleString()}`, 'Total Value']} />
-              </PieChart>
-            </ResponsiveContainer>
-          </ChartContainer>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
-          {Object.entries(categoryStatus).map(([category, statuses]) => (
-            <div key={category} className="border p-4 rounded-md">
-              <h3 className="text-lg font-medium mb-2">{category}</h3>
-              <div className="grid grid-cols-3 gap-2 text-sm">
-                <div className="flex flex-col items-center">
-                  <span className="text-amber-500 font-bold">{statuses.pending}</span>
-                  <span>Pending</span>
+        <div className="space-y-8">
+          {categoryAnalytics.map((category) => (
+            <div key={category.category} className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Boxes className="h-5 w-5 text-primary mr-2" />
+                  <h3 className="font-medium text-lg">{category.category}</h3>
                 </div>
-                <div className="flex flex-col items-center">
-                  <span className="text-blue-500 font-bold">{statuses.ordered}</span>
-                  <span>Ordered</span>
+                <Badge variant="outline">
+                  ${category.totalValue.toLocaleString()}
+                </Badge>
+              </div>
+              
+              {/* Timeline visualization */}
+              <div className="relative">
+                <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-primary rounded-full transition-all duration-500" 
+                    style={{ width: `${category.deliveryProgress}%` }}
+                  ></div>
                 </div>
-                <div className="flex flex-col items-center">
-                  <span className="text-green-500 font-bold">{statuses.delivered}</span>
-                  <span>Delivered</span>
+                
+                <div className="flex justify-between mt-2 text-sm text-muted-foreground">
+                  <div className="flex items-center">
+                    <AlertTriangle className="h-4 w-4 text-amber-500 mr-1" />
+                    <span>{category.pending} pending</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Package className="h-4 w-4 text-blue-500 mr-1" />
+                    <span>{category.ordered} ordered</span>
+                  </div>
+                  <div className="flex items-center">
+                    <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
+                    <span>{category.delivered} delivered</span>
+                  </div>
                 </div>
+              </div>
+              
+              {/* Key milestones */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-2">
+                {category.pending > 0 && (
+                  <div className="flex items-center p-3 bg-amber-500/10 rounded-lg border border-amber-500/20">
+                    <Clock className="h-5 w-5 text-amber-500 mr-2" />
+                    <div>
+                      <p className="font-medium">{category.pending} items</p>
+                      <p className="text-xs text-muted-foreground">Awaiting order</p>
+                    </div>
+                  </div>
+                )}
+                
+                {category.ordered > 0 && (
+                  <div className="flex items-center p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
+                    <CalendarDays className="h-5 w-5 text-blue-500 mr-2" />
+                    <div>
+                      <p className="font-medium">{category.ordered} items</p>
+                      <p className="text-xs text-muted-foreground">In transit</p>
+                    </div>
+                  </div>
+                )}
+                
+                {category.delivered > 0 && (
+                  <div className="flex items-center p-3 bg-green-500/10 rounded-lg border border-green-500/20">
+                    <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
+                    <div>
+                      <p className="font-medium">{category.delivered} items</p>
+                      <p className="text-xs text-muted-foreground">Delivered</p>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           ))}
+          
+          {categoryAnalytics.length === 0 && (
+            <div className="text-center py-10 text-muted-foreground">
+              <Boxes className="h-12 w-12 mx-auto mb-4 opacity-30" />
+              <p>No material categories found. Create custom categories to organize your materials.</p>
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>
