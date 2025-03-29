@@ -1,48 +1,48 @@
 
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: 'admin' | 'manager' | 'purchaser' | 'viewer';
-  avatar?: string;
-}
-
-export interface Team {
+export interface Project {
   id: string;
   name: string;
   description: string;
-  createdAt: Date;
-  createdBy: string;
+  address: string;
+  startDate: string;
+  endDate: string;
+  budget: number;
+  status: 'active' | 'completed' | 'archived';
+  progress: number;
+  image?: string;
+  materials: Material[];
+  team: TeamMember[];
+  updates: ProjectUpdate[];
+  tasks: ProjectTask[];
+}
+
+export interface ProjectTask {
+  id: string;
+  title: string;
+  description: string;
+  status: 'todo' | 'in-progress' | 'completed';
+  assignedTo: string; // userId
+  dueDate: string;
+  priority: 'low' | 'medium' | 'high';
+  createdAt: string;
+}
+
+export interface ProjectUpdate {
+  id: string;
+  message: string;
+  createdBy: string; // userId
+  createdAt: string;
+  attachments?: string[];
 }
 
 export interface TeamMember {
   id: string;
   userId: string;
-  teamId: string;
-  role: 'admin' | 'manager' | 'member';
-  joinedAt: Date;
-}
-
-export interface Invitation {
-  id: string;
-  email: string;
-  teamId: string;
-  role: 'admin' | 'manager' | 'member';
-  invitedBy: string;
-  invitedAt: Date;
-  status: 'pending' | 'accepted' | 'expired';
-  code: string;
-}
-
-export interface Project {
-  id: string;
   name: string;
-  description: string;
-  createdAt: Date;
-  updatedAt: Date;
-  createdBy: string;
-  status: 'active' | 'completed' | 'archived';
-  materials: Material[];
+  email: string;
+  role: 'admin' | 'manager' | 'member' | 'client' | 'supplier';
+  joinedAt: string;
+  avatar?: string;
 }
 
 export interface Material {
@@ -51,34 +51,18 @@ export interface Material {
   category: string;
   quantity: number;
   unit: string;
-  price?: number;
+  price: number;
   supplier?: string;
-  createdAt: Date;
-  updatedAt: Date;
-  createdBy: string;
-  updatedBy: string;
-  status: 'pending' | 'ordered' | 'delivered';
-  history: MaterialHistory[];
-  confirmed: boolean;
+  ordered: boolean;
+  delivered: boolean;
 }
 
-export interface MaterialHistory {
+export interface User {
   id: string;
-  materialId: string;
-  field: string;
-  oldValue: string | number;
-  newValue: string | number;
-  changedAt: Date;
-  changedBy: string;
-  confirmed: boolean;
-  confirmedBy?: string;
-  confirmedAt?: Date;
-}
-
-export interface ProjectSummary {
-  totalMaterials: number;
-  pendingMaterials: number;
-  orderedMaterials: number;
-  deliveredMaterials: number;
-  recentChanges: number;
+  email: string;
+  name: string;
+  role: 'admin' | 'manager' | 'member' | 'client' | 'supplier';
+  avatar?: string;
+  projects: string[]; // Array of project IDs
+  createdAt: string;
 }
